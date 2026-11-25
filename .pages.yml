@@ -22,6 +22,11 @@ content:
       - { name: summary, label: "Descrizione breve (card)", type: text }
       - { name: image, label: Foto, type: image }
       - { name: imageAlt, label: "Descrizione della foto (accessibilità)", type: string }
+      - name: imageFit
+        label: "Come mostrare la foto"
+        type: select
+        options:
+          values: [cover, contain]
       - { name: order, label: "Ordine (1 = primo)", type: number }
       - { name: featured, label: "In evidenza in home", type: boolean }
       - name: color
@@ -50,6 +55,11 @@ content:
       - { name: summary, label: "Descrizione breve", type: text }
       - { name: image, label: Foto, type: image }
       - { name: imageAlt, label: "Descrizione della foto", type: string }
+      - name: imageFit
+        label: "Come mostrare la foto"
+        type: select
+        options:
+          values: [cover, contain]
       - { name: order, label: "Ordine (1 = primo)", type: number }
       - { name: body, label: "Testo della pagina dell'evento", type: rich-text }
 
@@ -69,6 +79,11 @@ content:
           - { name: lead, label: Testo, type: text }
           - { name: image, label: Foto, type: image }
           - { name: imageAlt, label: "Descrizione della foto", type: string }
+          - name: imageFit
+            label: "Come mostrare la foto"
+            type: select
+            options:
+              values: [cover, contain]
       - name: about
         label: "Chi siamo"
         type: object
@@ -114,12 +129,15 @@ content:
     fields:
       - { name: name, label: Nome, type: string }
       - { name: legalName, label: "Nome legale", type: string }
-      - { name: tagline, label: Sottotitolo, type: string }
+      - { name: shortTag, label: "Sottotitolo", type: string }
+      - { name: motto, label: Motto, type: string }
       - { name: description, label: "Descrizione per Google", type: text }
       - { name: fiscalCode, label: "Codice fiscale", type: string }
       - { name: address, label: Indirizzo, type: string }
       - { name: addressNote, label: "Nota indirizzo", type: string }
+      - { name: mapsLink, label: "Link Google Maps", type: string }
       - { name: phone, label: Telefono, type: string }
+      - { name: whatsapp, label: "WhatsApp (solo numeri, es. 393514315237)", type: string }
       - { name: email, label: Email, type: string }
       - { name: facebook, label: "Link Facebook", type: string }
       - { name: instagram, label: "Link Instagram", type: string }
@@ -127,13 +145,21 @@ content:
         label: Donazioni
         type: object
         fields:
-          - { name: paypal, label: "Link PayPal (es. paypal.me/...)", type: string }
-          - { name: satispay, label: "Link Satispay", type: string }
           - { name: iban, label: IBAN, type: string }
           - { name: ibanHolder, label: "Intestatario del conto", type: string }
+          - { name: satispay, label: "Link Satispay", type: string }
+          - { name: paypalEmail, label: "Email PayPal", type: string }
+          - { name: paypalLink, label: "Link PayPal (opzionale, es. paypal.me/...)", type: string }
+      - { name: membershipForm, label: "Link domanda di ammissione (Google Form)", type: string }
       - { name: volunteerLink, label: "Link modulo volontari (opzionale)", type: string }
       - { name: newsletterLink, label: "Link iscrizione aggiornamenti (opzionale)", type: string }
-      - { name: documentsLink, label: "Link documenti / bilanci (opzionale)", type: string }
+      - name: documents
+        label: Documenti
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Titolo, type: string }
+          - { name: file, label: "File PDF", type: file }
       - { name: ogImage, label: "Immagine per anteprima link", type: image }
 
   - name: network
@@ -168,6 +194,24 @@ content:
       - { name: ctaStory, label: "Pulsante storia", type: string }
       - { name: heroImage, label: "Foto principale", type: image }
       - { name: heroImageAlt, label: "Descrizione della foto", type: string }
+      - { name: sportsKicker, label: "Sport · etichetta", type: string }
+      - { name: sportsTitle, label: "Sport · titolo", type: string }
+      - { name: sportsLead, label: "Sport · testo", type: text }
+      - name: sports
+        label: Sport
+        type: object
+        list: true
+        fields:
+          - { name: name, label: Nome, type: string }
+          - { name: images, label: Volantini, type: image, list: true }
+      - { name: flyerAlt, label: "Descrizione volantino ({sport} = nome)", type: string }
+      - { name: discount, label: "Agevolazioni", type: string }
+      - { name: whereLabel, label: "Dove · etichetta", type: string }
+      - { name: where, label: "Dove ci alleniamo", type: string }
+      - { name: callLabel, label: "Telefono · etichetta", type: string }
+      - { name: phone, label: Telefono, type: string }
+      - { name: whatsapp, label: "WhatsApp (solo numeri)", type: string }
+      - { name: followLabel, label: "Instagram · etichetta", type: string }
       - { name: whoKicker, label: "Chi gioca · etichetta", type: string }
       - { name: whoTitle, label: "Chi gioca · titolo", type: string }
       - { name: whoLead, label: "Chi gioca · testo", type: text }

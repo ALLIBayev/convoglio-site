@@ -5,27 +5,36 @@
 @import '@fontsource/bricolage-grotesque/600.css';
 @import '@fontsource/bricolage-grotesque/800.css';
 
+/*
+  ConVoglio OdV — tokens taken from the real logo (the red bus).
+  Bus red leads, sky ribbon and mint windows support, sun yellow is the one sharp accent.
+*/
 :root {
   --ink: #1b1f2a;
-  --muted: #5b6170;
-  --line: #e6e8ec;
-  --soft: #f2f4f7;
+  --muted: #555b69;
+  --line: #e3e6eb;
+  --soft: #f3f5f7;
   --white: #ffffff;
-  --red: #c8401f;
-  --red-dark: #a9351a;
-  --yellow: #f2b33d;
-  --yellow-dark: #e0a12b;
-  --teal: #0e6e66;
-  --teal-dark: #0a524c;
+
+  --red: #e30813;        /* bus body */
+  --red-dark: #b80610;
+  --orange: #e6622a;     /* bus roof */
+  --yellow: #f6c33b;     /* "ConVoglio" lettering */
+  --yellow-dark: #e2ad1f;
+  --sky: #3fa2e2;        /* ribbon */
+  --teal: #0b6b62;       /* deep version of the mint windows, used for links */
+  --teal-dark: #08514a;
   --night: #1b1f2a;
   --night-2: #2b3040;
 
-  --tint-blue: #e4ebf6;
-  --tint-yellow: #fdf0d5;
-  --tint-red: #fbe2da;
-  --tint-green: #dcefec;
+  --tint-sky: #e7f3fc;
+  --tint-yellow: #fdf1d3;
+  --tint-red: #fde4e2;
+  --tint-mint: #dff0e9;
 
-  --radius: 22px;
+  --radius-lg: 28px;
+  --radius: 20px;
+  --radius-sm: 14px;
   --wrap: 1200px;
   --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-head: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
@@ -35,7 +44,7 @@
 *::before,
 *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: 96px; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
 body {
@@ -43,35 +52,40 @@ body {
   font-family: var(--font-body);
   color: var(--ink);
   background: var(--white);
-  font-size: 16px;
-  line-height: 1.55;
+  font-size: 17px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
 }
 
 img, svg { max-width: 100%; display: block; }
-h1, h2, h3 { font-family: var(--font-head); margin: 0; line-height: 1.08; letter-spacing: -0.01em; text-wrap: balance; }
+h1, h2, h3 { font-family: var(--font-head); margin: 0; line-height: 1.08; letter-spacing: -0.015em; text-wrap: balance; }
 p { margin: 0; text-wrap: pretty; }
-a { color: var(--teal); }
+a { color: var(--teal); text-underline-offset: 3px; }
 a:hover { color: var(--teal-dark); }
-:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; border-radius: 6px; }
+:focus-visible { outline: 3px solid var(--sky); outline-offset: 3px; border-radius: 6px; }
 
 .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 24px; }
 .section { padding: 96px 0; }
 .section--soft { background: var(--soft); }
-.kicker { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--red); margin-bottom: 12px; }
-.h2 { font-size: clamp(34px, 4.4vw, 44px); font-weight: 800; }
-.lead { font-size: 18px; color: var(--muted); max-width: 640px; margin-top: 16px; }
-.section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-bottom: 40px; }
+.section--tight { padding: 64px 0; }
+.kicker { font-size: 15px; font-weight: 600; color: var(--red-dark); margin-bottom: 10px; }
+.h1 { font-size: clamp(40px, 5.6vw, 64px); font-weight: 800; }
+.h2 { font-size: clamp(32px, 4.2vw, 44px); font-weight: 800; }
+.lead { font-size: 19px; color: var(--muted); max-width: 640px; margin-top: 16px; }
+.section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px 24px; flex-wrap: wrap; margin-bottom: 40px; }
 .more { font-weight: 600; }
+.row { display: flex; gap: 12px; flex-wrap: wrap; }
 
 .skip { position: absolute; left: -9999px; top: 0; background: var(--ink); color: #fff; padding: 12px 16px; z-index: 100; }
 .skip:focus { left: 12px; top: 12px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* Buttons */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   min-height: 48px; padding: 0 22px; border-radius: 999px;
-  font: 600 16px/1 var(--font-body); text-decoration: none; cursor: pointer;
+  font: 600 16px/1.1 var(--font-body); text-decoration: none; cursor: pointer; text-align: center;
   border: 2px solid transparent; transition: background-color .15s, color .15s, border-color .15s;
 }
 .btn--primary { background: var(--red); color: #fff; }
@@ -82,21 +96,22 @@ a:hover { color: var(--teal-dark); }
 .btn--yellow:hover { background: var(--yellow-dark); color: var(--ink); }
 .btn--line { background: transparent; color: #fff; border-color: #fff; }
 .btn--line:hover { background: #fff; color: var(--ink); }
-.btn--white { background: #fff; color: var(--red); }
+.btn--white { background: #fff; color: var(--red-dark); }
 .btn--white:hover { background: var(--tint-red); color: var(--red-dark); }
 
 /* Grids & cards */
 .grid { display: grid; gap: 16px; }
+.grid--2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); }
 .grid--3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
 .grid--4 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
 .card { background: #fff; border-radius: var(--radius); padding: 32px; }
 .card--soft { background: var(--soft); }
 .card h3 { font-size: 22px; font-weight: 600; margin-bottom: 10px; }
-.card p { color: var(--muted); font-size: 15px; }
+.card p { color: var(--muted); font-size: 16px; }
 
 .chips { display: flex; flex-wrap: wrap; gap: 10px; }
 .chip {
-  display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px;
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px;
   border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--ink); text-decoration: none; background: #fff;
 }
 .chip:hover { border-color: var(--ink); color: var(--ink); }
@@ -107,8 +122,22 @@ a:hover { color: var(--teal-dark); }
 .prose h3 { font-size: 22px; margin: 1.4em 0 .5em; }
 .prose img { border-radius: 16px; margin: 1.4em 0; height: auto; }
 
+/* Icon tiles (mission pillars) */
+.pill-ic { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 20px; }
+.pill-ic--red { background: var(--tint-red); color: var(--red-dark); }
+.pill-ic--yellow { background: var(--tint-yellow); color: #8a5d00; }
+.pill-ic--green { background: var(--tint-mint); color: var(--teal); }
+
+/* Page header used by inner pages */
+.page-head { padding: 72px 0 40px; }
+.page-head .lead { margin-top: 20px; }
+
 @media (max-width: 600px) {
+  body { font-size: 16px; }
   .section { padding: 64px 0; }
+  .section--tight { padding: 48px 0; }
+  .page-head { padding: 44px 0 24px; }
   .card { padding: 24px; }
   .wrap { padding: 0 20px; }
+  .lead { font-size: 17px; }
 }

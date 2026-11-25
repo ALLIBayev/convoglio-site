@@ -6,24 +6,30 @@ const year = new Date().getFullYear();
 <footer class="ftr" id="contatti">
   <div class="wrap">
     <div class="ftr__grid">
-      <div>
-        <p class="ftr__name">{site.name}</p>
-        <p class="ftr__txt">Associazione di volontariato.<br />C.F. {site.fiscalCode}</p>
+      <div class="ftr__brand">
+        <img src={u('/brand/bus-480.webp')} alt="" width="96" height="79" loading="lazy" />
+        <p class="ftr__name">{site.legalName}</p>
+        <p class="ftr__txt">{site.motto}.<br />C.F. {site.fiscalCode}</p>
       </div>
       <div>
         <h2 class="ftr__h">Sede</h2>
         <p class="ftr__txt">{site.address}<br />{site.addressNote}</p>
+        <p class="ftr__txt"><a href={site.mapsLink} target="_blank" rel="noopener">Apri in Google Maps</a></p>
       </div>
       <div>
         <h2 class="ftr__h">Contatti</h2>
         <ul class="ftr__list">
           <li><a href={telHref(site.phone)}>{site.phone}</a></li>
+          <li><a href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener">WhatsApp</a></li>
           <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
         </ul>
       </div>
       <div>
-        <h2 class="ftr__h">Seguici</h2>
+        <h2 class="ftr__h">Associazione</h2>
         <ul class="ftr__list">
+          <li><a href={u('/sostienici/')}>Sostienici</a></li>
+          <li><a href={u('/iscrizioni/')}>Diventa socio</a></li>
+          <li><a href={u('/documenti/')}>Documenti</a></li>
           {site.facebook && <li><a href={site.facebook} rel="noopener" target="_blank">Facebook</a></li>}
           {site.instagram && <li><a href={site.instagram} rel="noopener" target="_blank">Instagram</a></li>}
         </ul>
@@ -31,22 +37,22 @@ const year = new Date().getFullYear();
     </div>
     <div class="ftr__bottom">
       <span>© {year} {site.legalName}</span>
-      <span class="ftr__legal">
-        {site.documentsLink && <><a href={u(site.documentsLink)}>Documenti</a> · </>}
-        <a href={u('/privacy/')}>Privacy</a>
-      </span>
+      <a href={u('/privacy/')}>Privacy</a>
     </div>
   </div>
 </footer>
 
 <style>
   .ftr { background: var(--night); color: #c9ced8; padding: 64px 0 32px; font-size: 15px; }
-  .ftr a { color: #c9ced8; }
+  .ftr a { color: #e3e6eb; }
   .ftr a:hover { color: #fff; }
-  .ftr__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 32px; }
-  .ftr__name { font-family: var(--font-head); font-weight: 800; font-size: 24px; color: #fff; margin-bottom: 12px; }
+  .ftr__grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 32px; }
+  .ftr__brand img { width: 96px; height: auto; margin-bottom: 14px; }
+  .ftr__name { font-family: var(--font-head); font-weight: 800; font-size: 22px; color: #fff; margin-bottom: 8px; }
   .ftr__h { font-family: var(--font-body); font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 12px; letter-spacing: 0; }
-  .ftr__txt { line-height: 1.8; }
-  .ftr__list { list-style: none; margin: 0; padding: 0; line-height: 2; }
-  .ftr__bottom { border-top: 1px solid #343a4a; margin-top: 40px; padding-top: 24px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; color: #9aa1ae; }
+  .ftr__txt { line-height: 1.7; margin-bottom: 8px; }
+  .ftr__list { list-style: none; margin: 0; padding: 0; line-height: 2.1; }
+  .ftr__bottom { border-top: 1px solid #343a4a; margin-top: 40px; padding-top: 24px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 14px; color: #a4abb8; }
+  @media (max-width: 900px) { .ftr__grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .ftr__grid { grid-template-columns: 1fr; gap: 28px; } }
 </style>

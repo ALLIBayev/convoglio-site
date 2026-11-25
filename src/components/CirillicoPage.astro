@@ -1,16 +1,19 @@
 ---
+import '@fontsource/unbounded/700.css';
+import '@fontsource/unbounded/800.css';
 import Base from '../layouts/Base.astro';
 import Media from './Media.astro';
 import site from '../content/settings/site.json';
 import it from '../content/cirillico/it.json';
 import ru from '../content/cirillico/ru.json';
 import en from '../content/cirillico/en.json';
-import { u, isExternal } from '../lib/url';
+import { u, isExternal, telHref } from '../lib/url';
 
 interface Props { lang: 'it' | 'ru' | 'en' }
 const { lang } = Astro.props;
 const t = { it, ru, en }[lang];
-const paths = { it: '/cirillico/', ru: '/cirillico/ru/', en: '/cirillico/en/' };
+const base = '/progetti/uspr-cirillico/';
+const paths = { it: base, ru: `${base}ru/`, en: `${base}en/` };
 const alternates = [
   { lang: 'it', href: paths.it },
   { lang: 'ru', href: paths.ru },
@@ -18,19 +21,26 @@ const alternates = [
   { lang: 'x-default', href: paths.it },
 ];
 const ext = (h: string) => (isExternal(h) ? { target: '_blank', rel: 'noopener' } : {});
-const image = t.heroImage || it.heroImage || undefined;
+const heroImage = t.heroImage || it.heroImage;
+const igHandle = t.instagram ? '@' + t.instagram.replace(/\/+$/, '').split('/').pop() : '';
+const labels = {
+  it: { skip: 'Lingua', back: 'Torna ai progetti di ConVoglio', open: 'Apri il volantino' },
+  ru: { skip: 'Язык', back: 'Назад к проектам ConVoglio', open: 'Открыть флаер' },
+  en: { skip: 'Language', back: 'Back to ConVoglio projects', open: 'Open the flyer' },
+}[lang];
 ---
-<Base title={t.seoTitle} description={t.seoDescription} lang={lang} alternates={alternates} chrome={false} image={image}>
+<Base title={t.seoTitle} description={t.seoDescription} lang={lang} alternates={alternates} chrome={false} image="/og-cirillico.png">
   <section class="hero">
     <div class="wrap">
       <div class="bar">
-        <a class="crumb" href={u('/progetti/')}>
+        <a class="crumb" href={u('/progetti/')} aria-label={labels.back}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M15 6l-6 6 6 6" /></svg>
+          <img src={u('/brand/bus.webp')} alt="" width="40" height="33" />
           <strong>ConVoglio</strong><span>/ {t.back}</span>
         </a>
-        <nav class="langs" aria-label="Lingua / Язык / Language">
+        <nav class="langs" aria-label={labels.skip}>
           {(['it', 'ru', 'en'] as const).map((l) => (
-            <a href={u(paths[l])} hreflang={l} lang={l} aria-current={l === lang ? 'true' : undefined}>{l.toUpperCase()}</a>
+            <a href={u(paths[l])} hreflang={l} lang={l} aria-current={l === lang ? 'page' : undefined}>{l.toUpperCase()}</a>
           ))}
         </nav>
       </div>
@@ -38,9 +48,9 @@ const image = t.heroImage || it.heroImage || undefined;
       <div class="hero__grid">
         <div class="hero__copy">
           <ul class="tags">
-            {t.tags.map((tag, i) => <li class={i < 2 ? 'tag tag--y' : 'tag'}>{tag}</li>)}
+            {t.tags.map((tag, i) => <li class={i < t.tags.length - 1 ? 'tag tag--y' : 'tag'}>{tag}</li>)}
           </ul>
-          <h1>USPR<br />Cirillico</h1>
+          <h1>USPR <span>Cirillico</span></h1>
           <p class="sub">{t.subtitle}</p>
           <p class="hero__lead">{t.lead}</p>
           <div class="row">
@@ -48,20 +58,55 @@ const image = t.heroImage || it.heroImage || undefined;
             <a class="btn btn--line" href="#storia">{t.ctaStory}</a>
           </div>
         </div>
-        <div class="hero__media"><Media src={t.heroImage || it.heroImage} alt={t.heroImageAlt} tone="dark" eager /></div>
+        <div class="hero__media"><Media src={heroImage} alt={t.heroImageAlt} tone="dark" eager width={1200} height={900} /></div>
       </div>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section sports-sec" id="sport">
+    <div class="wrap">
+      <p class="kicker">{t.sportsKicker}</p>
+      <h2 class="h2">{t.sportsTitle}</h2>
+      <p class="lead">{t.sportsLead}</p>
+      <ul class="sports">
+        {t.sports.map((s) => (
+          <li class="sport">
+            <a class="sport__img" href={u(s.images[0])} target="_blank" rel="noopener" aria-label={`${labels.open}: ${s.name}`}>
+              <img src={u(s.images[0])} alt={t.flyerAlt.replace('{sport}', s.name)} width="800" height="1000" loading="lazy" decoding="async" />
+            </a>
+            <h3>{s.name}</h3>
+          </li>
+        ))}
+      </ul>
+      <div class="info">
+        <div class="info__item">
+          <span class="info__label">{t.whereLabel}</span>
+          <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Via Tirreno 303, 10136 Torino')}`} target="_blank" rel="noopener">{t.where}</a>
+        </div>
+        <div class="info__item">
+          <span class="info__label">{t.callLabel}</span>
+          <a href={`https://wa.me/${t.whatsapp}`} target="_blank" rel="noopener">{t.phone}</a>
+        </div>
+        {t.instagram && (
+          <div class="info__item">
+            <span class="info__label">{t.followLabel}</span>
+            <a href={t.instagram} target="_blank" rel="noopener">{igHandle}</a>
+          </div>
+        )}
+      </div>
+      <p class="discount">{t.discount}</p>
+    </div>
+  </section>
+
+  <section class="section section--soft">
     <div class="wrap">
       <p class="kicker">{t.whoKicker}</p>
       <h2 class="h2">{t.whoTitle}</h2>
       <p class="lead">{t.whoLead}</p>
-      <div class="grid grid--4 groups">
+      <div class="groups">
         {t.groups.map((g) => (
-          <article class="card card--soft group">
-            <span class="code">{g.code}</span>
+          <article class="group">
+            <span class="code" aria-hidden="true">{g.code}</span>
             <h3>{g.title}</h3>
             <p>{g.text}</p>
           </article>
@@ -70,7 +115,7 @@ const image = t.heroImage || it.heroImage || undefined;
     </div>
   </section>
 
-  <section class="section section--soft" id="storia">
+  <section class="section" id="storia">
     <div class="wrap story">
       <div>
         <p class="kicker">{t.storyKicker}</p>
@@ -84,7 +129,7 @@ const image = t.heroImage || it.heroImage || undefined;
     </div>
   </section>
 
-  <section class="section">
+  <section class="section section--soft">
     <div class="wrap">
       <h2 class="press__title">{t.pressTitle}</h2>
       <ul class="press">
@@ -108,10 +153,11 @@ const image = t.heroImage || it.heroImage || undefined;
 
   <footer slot="footer" class="cfoot">
     <div class="wrap cfoot__in">
-      <span>{t.footer} · C.F. {site.fiscalCode}</span>
+      <span>{t.footer}. C.F. {site.fiscalCode}</span>
       <span class="cfoot__links">
         {t.instagram && <a href={t.instagram} target="_blank" rel="noopener">Instagram</a>}
         {t.facebook && <a href={t.facebook} target="_blank" rel="noopener">Facebook</a>}
+        <a href={telHref(t.phone)}>{t.phone}</a>
         <a href={u('/')}>ConVoglio</a>
         <a href={u('/privacy/')}>Privacy</a>
       </span>
@@ -120,65 +166,90 @@ const image = t.heroImage || it.heroImage || undefined;
 </Base>
 
 <style>
-  .row { display: flex; gap: 12px; flex-wrap: wrap; }
-  .hero { background: var(--night); color: #fff; padding: 20px 0 96px; }
-  .bar { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 64px; margin-bottom: 48px; }
-  .crumb { display: inline-flex; align-items: center; gap: 8px; color: #fff; text-decoration: none; min-height: 44px; }
+  /* Cirillico has its own sporty voice: Unbounded (with full Cyrillic) for display type. */
+  h1, .h2, .join h2, .code, .year, .sport h3 { font-family: 'Unbounded', var(--font-head); letter-spacing: -0.02em; }
+  .hero { background: var(--night); color: #fff; padding: 16px 0 96px; }
+  .bar { display: flex; justify-content: space-between; align-items: center; gap: 16px; min-height: 64px; margin-bottom: 40px; }
+  .crumb { display: inline-flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; min-height: 48px; }
   .crumb:hover { color: var(--yellow); }
+  .crumb img { width: 40px; height: auto; }
   .crumb strong { font-family: var(--font-head); font-size: 20px; }
   .crumb span { color: #aeb4c0; }
   .langs { display: flex; gap: 4px; background: var(--night-2); padding: 4px; border-radius: 999px; }
   .langs a { min-width: 48px; min-height: 44px; display: grid; place-items: center; padding: 0 12px; border-radius: 999px; color: #d5d9e0; text-decoration: none; font-weight: 600; font-size: 14px; }
   .langs a:hover { color: #fff; }
-  .langs a[aria-current='true'] { background: var(--yellow); color: var(--ink); }
-  .hero__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 56px; align-items: center; }
+  .langs a[aria-current='page'] { background: var(--yellow); color: var(--ink); }
+  .hero__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 56px; align-items: center; }
   .hero__copy { display: flex; flex-direction: column; gap: 20px; }
   .tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-  .tag { font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; border: 1px solid #4a5163; color: #d5d9e0; }
+  .tag { font-size: 14px; font-weight: 600; padding: 6px 12px; border-radius: 999px; border: 1px solid #4a5163; color: #d5d9e0; }
   .tag--y { background: var(--yellow); border-color: var(--yellow); color: var(--ink); }
-  h1 { font-size: clamp(56px, 7.5vw, 88px); font-weight: 800; line-height: 0.95; }
-  .sub { color: var(--yellow); font-weight: 600; letter-spacing: 0.14em; font-size: 14px; }
-  .hero__lead { font-size: 20px; color: #d5d9e0; max-width: 520px; }
-  .hero__media { height: 460px; border-radius: 28px; overflow: hidden; }
+  h1 { font-size: clamp(44px, 6vw, 76px); font-weight: 800; line-height: 0.98; }
+  h1 span { display: block; color: var(--yellow); }
+  .sub { color: #aeb4c0; font-weight: 600; font-size: 16px; }
+  .hero__lead { font-size: 20px; color: #e3e6eb; max-width: 520px; }
+  .hero__media { aspect-ratio: 4 / 3; border-radius: var(--radius-lg); overflow: hidden; }
 
-  .groups { margin-top: 40px; }
-  .group { display: flex; flex-direction: column; gap: 8px; padding: 28px; }
-  .code { font-family: var(--font-head); font-size: 34px; font-weight: 800; color: var(--red); }
-  .group h3 { font-size: 20px; margin: 0; }
+  .sports { list-style: none; margin: 40px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .sport h3 { font-size: 22px; font-weight: 800; margin-top: 14px; }
+  .sport__img { display: block; border-radius: var(--radius); overflow: hidden; aspect-ratio: 4 / 5; background: #2f9a4a; }
+  .sport__img img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+  .sport__img:hover img { transform: scale(1.03); }
+  .info { margin-top: 40px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .info__item { background: var(--soft); border-radius: var(--radius-sm); padding: 18px 20px; display: flex; flex-direction: column; gap: 4px; }
+  .info__label { font-size: 14px; color: var(--muted); }
+  .info__item a { font-weight: 700; font-size: 18px; color: var(--ink); overflow-wrap: anywhere; }
+  .discount { margin-top: 16px; color: var(--muted); }
 
-  .story { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 48px; align-items: start; }
+  .groups { margin-top: 40px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .group { background: #fff; border-radius: var(--radius); display: flex; flex-direction: column; gap: 8px; padding: 28px; }
+  .code { font-size: 30px; font-weight: 800; color: var(--red); }
+  .group h3 { font-size: 20px; font-weight: 700; }
+  .group p { color: var(--muted); font-size: 15px; }
+
+  .story { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
   .timeline { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
-  .timeline li { background: #fff; border-radius: 18px; padding: 22px 24px; display: grid; grid-template-columns: 64px 1fr; gap: 20px; align-items: baseline; }
-  .year { font-family: var(--font-head); font-weight: 800; font-size: 24px; color: var(--teal); }
+  .timeline li { background: var(--soft); border-radius: 18px; padding: 22px 24px; display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 16px; align-items: baseline; }
+  .year { font-weight: 800; font-size: 22px; color: var(--teal); }
 
-  .press__title { font-family: var(--font-body); font-size: 18px; font-weight: 600; color: var(--muted); margin-bottom: 20px; }
-  .press { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 12px; }
-  .press li > * { min-height: 92px; border: 1px solid var(--line); border-radius: 18px; display: grid; place-items: center; text-align: center; padding: 12px; font-family: Georgia, 'Times New Roman', serif; font-weight: 700; font-size: 20px; color: var(--ink); text-decoration: none; }
+  .press__title { font-family: var(--font-body); font-size: 18px; font-weight: 600; color: var(--muted); margin-bottom: 20px; letter-spacing: 0; }
+  .press { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+  .press li > * { min-height: 88px; height: 100%; background: #fff; border: 1px solid var(--line); border-radius: 18px; display: grid; place-items: center; text-align: center; padding: 12px; font-family: Georgia, 'Times New Roman', serif; font-weight: 700; font-size: 19px; color: var(--ink); text-decoration: none; }
   .press li > a:hover { border-color: var(--ink); color: var(--ink); }
 
-  .join { margin-top: 56px; background: var(--red); color: #fff; border-radius: 28px; padding: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 24px; align-items: center; }
-  .join h2 { font-size: clamp(30px, 3.4vw, 40px); font-weight: 800; margin-bottom: 8px; }
-  .join p { color: #fde7e0; }
+  .join { margin-top: 56px; background: var(--red); color: #fff; border-radius: var(--radius-lg); padding: 48px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: center; }
+  .join h2 { font-size: clamp(26px, 3.2vw, 38px); font-weight: 800; margin-bottom: 8px; }
+  .join p { color: #fff; }
 
   .cfoot { background: var(--night); color: #aeb4c0; padding: 28px 0; font-size: 14px; }
   .cfoot__in { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-  .cfoot__links { display: flex; gap: 16px; flex-wrap: wrap; }
-  .cfoot a { color: #d5d9e0; }
+  .cfoot__links { display: flex; gap: 6px 18px; flex-wrap: wrap; }
+  .cfoot a { color: #e3e6eb; }
   .cfoot a:hover { color: #fff; }
 
-  @media (max-width: 600px) {
-    .hero { padding-bottom: 64px; }
-    .bar { margin-bottom: 32px; }
-    .crumb span { display: none; }
-    .hero__media { height: 280px; }
-    .hero__lead { font-size: 18px; }
-    .timeline li { grid-template-columns: 1fr; gap: 6px; }
-    .join { padding: 32px 22px; }
-    .groups { grid-template-columns: 1fr 1fr; gap: 10px; }
-    .group { padding: 20px 16px; }
-    .group h3 { font-size: 17px; }
-    .code { font-size: 28px; }
-    .press { grid-template-columns: 1fr 1fr; }
-    .press li > * { min-height: 72px; font-size: 17px; }
+  @media (max-width: 960px) {
+    .hero__grid, .story, .join { grid-template-columns: minmax(0, 1fr); }
+    .groups { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .press { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
+  @media (max-width: 700px) {
+    .sports { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .sport h3 { font-size: 15px; margin-top: 8px; }
+    .info { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .hero { padding-bottom: 56px; }
+    .bar { margin-bottom: 24px; }
+    .crumb span, .crumb strong { display: none; }
+    .hero__lead { font-size: 17px; }
+    .groups { gap: 10px; }
+    .group { padding: 20px 16px; }
+    .group h3 { font-size: 16px; }
+    .code { font-size: 24px; }
+    .timeline li { grid-template-columns: 1fr; gap: 4px; }
+    .press { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .press li > * { min-height: 72px; font-size: 17px; }
+    .join { padding: 32px 22px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .sport__img img { transition: none; } .sport__img:hover img { transform: none; } }
 </style>

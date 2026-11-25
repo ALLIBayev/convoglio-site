@@ -1,0 +1,28 @@
+---
+import network from '../content/settings/network.json';
+import { u } from '../lib/url';
+---
+<section class="net" aria-labelledby="rete">
+  <h2 class="net__title" id="rete">{network.title}</h2>
+  <ul class="net__grid">
+    {network.partners.map((p) => (
+      <li>
+        <a class="net__item" href={p.url} target="_blank" rel="noopener">
+          {p.logo ? <img src={u(p.logo)} alt="" loading="lazy" /> : null}
+          <span>{p.name}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .net { margin-top: 72px; }
+  .net__title { font-family: var(--font-body); font-size: 18px; font-weight: 600; color: var(--muted); margin-bottom: 20px; letter-spacing: 0; }
+  .net__grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .net__item { height: 100%; min-height: 140px; border: 1px solid var(--line); border-radius: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 20px 16px; color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; text-align: center; }
+  .net__item:hover { border-color: var(--ink); color: var(--ink); }
+  .net__item img { max-height: 58px; max-width: 80%; width: auto; height: auto; object-fit: contain; }
+  @media (max-width: 900px) { .net__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 400px) { .net__item { min-height: 120px; padding: 16px 10px; font-size: 13px; } }
+</style>

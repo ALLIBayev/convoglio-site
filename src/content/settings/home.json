@@ -1,11 +1,12 @@
 {
-  "seoTitle": "ConVoglio ONLUS · Associazione di volontariato a Torino",
+  "seoTitle": "ConVoglio OdV · Organizzazione di volontariato a Torino",
   "hero": {
-    "badge": "Associazione di volontariato · Torino",
-    "title": "Eventi che diventano aiuto concreto.",
+    "badge": "Organizzazione di volontariato a Torino",
+    "title": "Trasformiamo le passioni in risorse.",
     "lead": "Organizziamo spettacoli, tornei e iniziative solidali. I fondi raccolti sostengono persone in difficoltà, la ricerca medica, l'ambiente e il contrasto alla violenza.",
-    "image": "",
-    "imageAlt": "Volontari di ConVoglio a un evento"
+    "image": "/brand/logo-full.webp",
+    "imageAlt": "Il logo di ConVoglio: un autobus rosso carico di valigie",
+    "imageFit": "contain"
   },
   "about": {
     "title": "Mettiamo la nostra esperienza al servizio di chi aiuta.",
@@ -39,7 +40,7 @@
     "volunteerText": "Hai tempo, idee o competenze? Aiutaci a organizzare il prossimo evento."
   },
   "newsletter": {
-    "title": "Resta sul treno",
-    "text": "Ricevi i prossimi eventi e scopri come partecipare. Niente spam."
+    "title": "Resta a bordo",
+    "text": "Annunciamo eventi e iniziative su Instagram e Facebook. Seguici per non perdere il prossimo."
   }
 }

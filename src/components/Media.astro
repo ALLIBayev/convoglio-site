@@ -1,39 +1,45 @@
 ---
 import { u } from '../lib/url';
-import Logo from './Logo.astro';
 
 interface Props {
   src?: string;
   alt?: string;
-  tone?: 'soft' | 'dark' | 'blue' | 'yellow' | 'red' | 'green';
+  tone?: string;
+  fit?: 'cover' | 'contain';
   class?: string;
   eager?: boolean;
+  width?: number;
+  height?: number;
 }
-const { src, alt = '', tone = 'soft', class: cls, eager = false } = Astro.props;
+const { src, alt = '', tone = 'soft', fit = 'cover', class: cls, eager = false, width, height } = Astro.props;
 ---
 {src ? (
   <img
-    class:list={['media', cls]}
+    class:list={['media', `media--${fit}`, fit === 'contain' && `media--bg-${tone}`, cls]}
     src={u(src)}
     alt={alt}
+    width={width}
+    height={height}
     loading={eager ? 'eager' : 'lazy'}
     decoding="async"
     fetchpriority={eager ? 'high' : undefined}
   />
 ) : (
-  <div class:list={['media', 'media--ph', `media--${tone}`, cls]} aria-hidden="true">
-    <Logo size={64} mono />
+  <div class:list={['media', 'media--ph', `media--bg-${tone}`, cls]} aria-hidden="true">
+    <img src={u('/brand/bus.webp')} alt="" width="120" height="99" loading="lazy" />
   </div>
 )}
 
 <style>
-  .media { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .media { width: 100%; height: 100%; display: block; }
+  .media--cover { object-fit: cover; }
+  .media--contain { object-fit: contain; padding: 16px; }
   .media--ph { display: grid; place-items: center; }
-  .media--ph :global(svg) { opacity: 0.35; }
-  .media--soft { background: #e9ecf1; color: #9aa1ae; }
-  .media--dark { background: var(--night-2); color: #8b93a5; }
-  .media--blue { background: var(--tint-blue); color: #7d93bb; }
-  .media--yellow { background: var(--tint-yellow); color: #c49a3c; }
-  .media--red { background: var(--tint-red); color: #d0826c; }
-  .media--green { background: var(--tint-green); color: #5c9f97; }
+  .media--ph img { width: 96px; height: auto; opacity: 0.22; filter: grayscale(1); }
+  .media--bg-soft { background: #e9ecf1; }
+  .media--bg-dark { background: var(--night-2); }
+  .media--bg-blue { background: var(--tint-sky); }
+  .media--bg-yellow { background: var(--tint-yellow); }
+  .media--bg-red { background: var(--tint-red); }
+  .media--bg-green { background: var(--tint-mint); }
 </style>

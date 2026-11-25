@@ -1,0 +1,100 @@
+---
+import Base from '../layouts/Base.astro';
+import CopyField from '../components/CopyField.astro';
+import Icon from '../components/Icon.astro';
+import site from '../content/settings/site.json';
+import { u } from '../lib/url';
+const d = site.donations;
+---
+<Base title="Sostienici · ConVoglio OdV" description={`Dona il 5×1000 a ConVoglio (C.F. ${site.fiscalCode}) o fai una donazione con bonifico, Satispay o PayPal. Ogni euro diventa un evento solidale a Torino.`}>
+  <header class="wrap page-head">
+    <p class="kicker">Sostienici</p>
+    <h1 class="h1">Ogni contributo diventa un evento solidale.</h1>
+    <p class="lead">Puoi aiutarci senza spendere nulla con il 5×1000, con una donazione o diventando socio. Scegli il modo che preferisci.</p>
+  </header>
+
+  <section class="wrap blocks">
+    <article class="block block--red" id="cinque-per-mille">
+      <div class="block__ic"><Icon name="heart" /></div>
+      <div class="block__body">
+        <h2>Dona il tuo 5×1000</h2>
+        <p>Nella dichiarazione dei redditi firma e scrivi il nostro codice fiscale nel riquadro del 5×1000. Non ti costa nulla: se non scegli, la quota va comunque allo Stato. Scegliendo ConVoglio non riceviamo i tuoi dati personali.</p>
+        <div class="block__field"><CopyField value={site.fiscalCode} label="codice fiscale" variant="onred" /></div>
+      </div>
+    </article>
+
+    <div class="donate" id="dona">
+      <h2 class="h2">Fai una donazione</h2>
+      <div class="grid grid--3 donate__grid">
+        {d.iban && (
+          <article class="card card--soft way">
+            <h3>Bonifico bancario</h3>
+            <p>Intestato a <strong>{d.ibanHolder}</strong>. Nella causale scrivi «Donazione» e, se vuoi, il progetto che vuoi sostenere.</p>
+            <div class="way__foot"><CopyField value={d.iban} label="IBAN" /></div>
+          </article>
+        )}
+        {d.satispay && (
+          <article class="card card--soft way">
+            <h3>Satispay</h3>
+            <p>Dal telefono, in pochi secondi. Il link apre la nostra pagina Satispay.</p>
+            <div class="way__foot"><a class="btn btn--primary" href={d.satispay} target="_blank" rel="noopener">Dona con Satispay</a></div>
+          </article>
+        )}
+        {(d.paypalLink || d.paypalEmail) && (
+          <article class="card card--soft way">
+            <h3>PayPal</h3>
+            {d.paypalLink ? (
+              <>
+                <p>Paga con il tuo conto PayPal o con la carta.</p>
+                <div class="way__foot"><a class="btn btn--primary" href={d.paypalLink} target="_blank" rel="noopener">Dona con PayPal</a></div>
+              </>
+            ) : (
+              <>
+                <p>Nell'app PayPal scegli «Invia» e inserisci questo indirizzo come destinatario.</p>
+                <div class="way__foot"><CopyField value={d.paypalEmail} label="indirizzo PayPal" /></div>
+              </>
+            )}
+          </article>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="wrap grid grid--2">
+      <article class="card">
+        <h2 class="h3">Diventa socio</h2>
+        <p>Compila la domanda di ammissione e versa la quota associativa. Ti aspettiamo a bordo.</p>
+        <p class="cta"><a class="btn btn--ghost" href={u('/iscrizioni/')}>Come iscriversi</a></p>
+      </article>
+      <article class="card">
+        <h2 class="h3">Dai una mano come volontario</h2>
+        <p>Hai tempo, idee o competenze? Scrivici e ti diciamo come aiutarci a organizzare il prossimo evento.</p>
+        <p class="cta row">
+          <a class="btn btn--ghost" href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener">WhatsApp</a>
+          <a class="btn btn--ghost" href={`mailto:${site.email}?subject=${encodeURIComponent('Vorrei fare il volontario')}`}>Email</a>
+        </p>
+      </article>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .blocks { padding-bottom: 96px; display: flex; flex-direction: column; gap: 64px; }
+  .block { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 24px; border-radius: var(--radius-lg); padding: 40px; scroll-margin-top: 110px; }
+  .block--red { background: var(--red); color: #fff; }
+  .block__ic { width: 56px; height: 56px; border-radius: 16px; background: rgba(255, 255, 255, 0.18); display: grid; place-items: center; }
+  .block h2 { font-size: clamp(28px, 3.4vw, 36px); font-weight: 800; margin-bottom: 12px; }
+  .block p { max-width: 640px; }
+  .block__field { margin-top: 24px; max-width: 420px; }
+  .donate { scroll-margin-top: 110px; }
+  .donate__grid { margin-top: 28px; }
+  .way { display: flex; flex-direction: column; gap: 6px; }
+  .way__foot { margin-top: auto; padding-top: 20px; }
+  .h3 { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+  .cta { margin-top: 20px; }
+  @media (max-width: 600px) {
+    .blocks { padding-bottom: 64px; gap: 48px; }
+    .block { grid-template-columns: 1fr; padding: 28px 22px; gap: 16px; }
+  }
+</style>

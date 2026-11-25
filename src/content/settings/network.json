@@ -1,9 +1,25 @@
 {
-  "title": "Il nostro network",
+  "title": "La nostra rete",
   "partners": [
-    { "name": "Centro Puzzle · Minipuzzle", "url": "https://www.centropuzzle.it/minipuzzle/", "logo": "" },
-    { "name": "Progetto Mitofusina 2", "url": "https://www.progettomitofusina2.com/", "logo": "" },
-    { "name": "Volontariato Torino · Vol.To", "url": "https://volontariatotorino.it/", "logo": "" },
-    { "name": "Terza Settimana", "url": "https://www.terzasettimana.org/", "logo": "" }
+    {
+      "name": "Centro Puzzle, progetto Mini Puzzle",
+      "url": "https://www.centropuzzle.it/minipuzzle/",
+      "logo": "/uploads/partner/minipuzzle.webp"
+    },
+    {
+      "name": "Progetto Mitofusina 2",
+      "url": "https://www.progettomitofusina2.com/",
+      "logo": "/uploads/partner/mitofusina.webp"
+    },
+    {
+      "name": "Vol.To, Volontariato Torino",
+      "url": "https://volontariatotorino.it/",
+      "logo": "/uploads/partner/volto.webp"
+    },
+    {
+      "name": "Terza Settimana",
+      "url": "https://www.terzasettimana.org/",
+      "logo": "/uploads/partner/terza-settimana.webp"
+    }
   ]
 }

@@ -1,43 +1,27 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import Media from '../../components/Media.astro';
+import EventCard from '../../components/EventCard.astro';
 import home from '../../content/settings/home.json';
-import { u } from '../../lib/url';
 
 const events = (await getCollection('events')).sort((a, b) => a.data.order - b.data.order);
-const tones = ['red', 'yellow', 'green', 'blue'] as const;
+const tones = ['yellow', 'blue', 'red', 'green'];
 ---
-<Base title="Eventi · ConVoglio ONLUS" description="Spettacoli, corse, tornei e feste per bambini: gli eventi solidali di ConVoglio ONLUS a Torino.">
-  <section class="section">
-    <div class="wrap">
-      <p class="kicker">Eventi</p>
-      <h1 class="h1">{home.events.title}</h1>
-      <p class="lead">{home.events.lead}</p>
-      <div class="grid grid--3 list">
-        {events.map((e, i) => (
-          <a class="ecard" href={u(`/eventi/${e.id}/`)}>
-            <div class="ecard__img"><Media src={e.data.image} alt={e.data.imageAlt} tone={tones[i % 4]} /></div>
-            <div class="ecard__body">
-              <span class="ecard__meta">{[e.data.category, e.data.date].filter(Boolean).join(' · ')}</span>
-              <h2>{e.data.title}</h2>
-              {e.data.summary && <p>{e.data.summary}</p>}
-            </div>
-          </a>
-        ))}
-      </div>
+<Base title="Eventi · ConVoglio OdV" description="Spettacoli, concerti, corse e feste per bambini: gli eventi solidali di ConVoglio OdV a Torino.">
+  <header class="wrap page-head">
+    <p class="kicker">Eventi</p>
+    <h1 class="h1">{home.events.title}</h1>
+    <p class="lead">{home.events.lead}</p>
+  </header>
+  <section class="wrap list-wrap">
+    <div class="grid grid--3 list">
+      {events.map((e, i) => <EventCard id={e.id} data={e.data} tone={tones[i % 4]} />)}
     </div>
   </section>
 </Base>
 
 <style>
-  .h1 { font-size: clamp(40px, 5.4vw, 60px); font-weight: 800; }
-  .list { margin-top: 48px; gap: 20px; }
-  .ecard { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; color: var(--ink); text-decoration: none; }
-  .ecard:hover { color: var(--ink); border-color: #c5cad3; }
-  .ecard__img { height: 180px; }
-  .ecard__body { padding: 22px; display: flex; flex-direction: column; gap: 8px; }
-  .ecard__meta { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--red); }
-  .ecard h2 { font-size: 22px; font-weight: 600; }
-  .ecard p { color: var(--muted); font-size: 15px; }
+  .list-wrap { padding-bottom: 96px; }
+  .list { gap: 16px; align-items: start; }
+  @media (max-width: 600px) { .list-wrap { padding-bottom: 64px; } }
 </style>

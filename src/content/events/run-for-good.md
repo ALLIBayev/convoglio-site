@@ -5,6 +5,7 @@ date: ""
 place: ""
 image: ""
 imageAlt: ""
+imageFit: cover
 summary: ""
-order: 2
+order: 4
 ---

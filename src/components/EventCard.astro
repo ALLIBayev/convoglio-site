@@ -1,0 +1,37 @@
+---
+import Media from './Media.astro';
+import { u } from '../lib/url';
+
+interface Props {
+  id: string;
+  data: { title: string; category: string; date: string; image: string; imageAlt: string; imageFit: 'cover' | 'contain'; summary: string };
+  tone?: string;
+}
+const { id, data, tone = 'yellow' } = Astro.props;
+const meta = [data.category, data.date].filter(Boolean);
+---
+<a class:list={['ecard', !data.image && `ecard--plain ecard--${tone}`]} href={u(`/eventi/${id}/`)}>
+  {data.image && <div class="ecard__img"><Media src={data.image} alt={data.imageAlt} fit={data.imageFit} tone={tone} /></div>}
+  <div class="ecard__body">
+    {meta.length > 0 && <p class="ecard__meta">{meta.map((m, i) => <span>{m}</span>)}</p>}
+    <h2 class="ecard__title">{data.title}</h2>
+    {data.summary && <p class="ecard__sum">{data.summary}</p>}
+  </div>
+</a>
+
+<style>
+  .ecard { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; color: var(--ink); text-decoration: none; background: #fff; }
+  .ecard:hover { color: var(--ink); border-color: #b9bfca; }
+  .ecard__img { aspect-ratio: 4 / 3; }
+  .ecard__body { padding: 22px; display: flex; flex-direction: column; gap: 8px; }
+  .ecard__meta { display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px; font-weight: 600; color: var(--red-dark); }
+  .ecard__meta span + span::before { content: ''; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: currentColor; margin: 0 8px 3px 2px; vertical-align: middle; }
+  .ecard__title { font-size: 22px; font-weight: 700; }
+  .ecard__sum { color: var(--muted); font-size: 15px; }
+  .ecard--plain { border-color: transparent; min-height: 150px; justify-content: flex-end; }
+  .ecard--plain:hover { border-color: rgba(27, 31, 42, 0.35); }
+  .ecard--blue { background: var(--tint-sky); }
+  .ecard--yellow { background: var(--tint-yellow); }
+  .ecard--red { background: var(--tint-red); }
+  .ecard--green { background: var(--tint-mint); }
+</style>

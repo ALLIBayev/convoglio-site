@@ -3,7 +3,7 @@ interface Props { value: string; label: string; variant?: 'onred' | 'light' }
 const { value, label, variant = 'light' } = Astro.props;
 ---
 <div class:list={['copy', `copy--${variant}`]}>
-  <span class="copy__val" aria-label={label}>{value}</span>
+  <span class="copy__val">{value}</span>
   <button type="button" class="copy__btn" data-copy={value} aria-label={`Copia ${label}`}>Copia</button>
   <span class="copy__live" aria-live="polite"></span>
 </div>

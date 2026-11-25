@@ -1,23 +1,31 @@
 {
   "name": "ConVoglio",
-  "legalName": "ConVoglio ONLUS",
-  "tagline": "Associazione di volontariato · Torino",
-  "description": "ConVoglio è un'associazione di volontariato di Torino: organizziamo spettacoli, tornei e iniziative solidali e mettiamo i fondi raccolti al servizio di chi aiuta.",
+  "legalName": "ConVoglio OdV",
+  "shortTag": "Organizzazione di volontariato, Torino",
+  "motto": "Trasformiamo le passioni in risorse",
+  "description": "ConVoglio è un'organizzazione di volontariato di Torino: organizziamo spettacoli, tornei e iniziative solidali e mettiamo i fondi raccolti al servizio di chi aiuta.",
   "fiscalCode": "97785290012",
   "address": "Via Giolitti 21, 10123 Torino",
-  "addressNote": "presso il Centro Servizi Vol.To",
+  "addressNote": "presso il Centro Servizi per il Volontariato Vol.To",
+  "mapsLink": "https://www.google.com/maps/search/?api=1&query=Via+Giolitti+21+10123+Torino",
   "phone": "+39 351 431 5237",
+  "whatsapp": "393514315237",
   "email": "infoconvoglio@gmail.com",
   "facebook": "https://www.facebook.com/ConVoglioonlus",
-  "instagram": "https://www.instagram.com/convoglioonlus",
+  "instagram": "https://www.instagram.com/convoglioonlus/",
   "donations": {
-    "paypal": "",
-    "satispay": "",
-    "iban": "",
-    "ibanHolder": "ConVoglio ONLUS"
+    "iban": "IT40U0623001013000047245309",
+    "ibanHolder": "ConVoglio",
+    "satispay": "https://tag.satispay.com/ConVoglio",
+    "paypalEmail": "infoconvoglio@gmail.com",
+    "paypalLink": ""
   },
+  "membershipForm": "https://docs.google.com/forms/d/e/1FAIpQLScgu6XhPO9p8_Jpp5MdUknWT0uV4At9sbpwacJ-5gQWgLKwiA/viewform",
   "volunteerLink": "",
   "newsletterLink": "",
-  "documentsLink": "",
+  "documents": [
+    { "title": "Statuto di ConVoglio OdV", "file": "" },
+    { "title": "Informativa privacy ai sensi del GDPR", "file": "" }
+  ],
   "ogImage": "/og-image.png"
 }

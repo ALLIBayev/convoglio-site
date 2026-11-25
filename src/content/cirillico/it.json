@@ -1,37 +1,116 @@
 {
-  "seoTitle": "USPR Cirillico · Calcio per chi parla russo a Torino",
-  "seoDescription": "USPR Cirillico è una squadra di calcio maschile e femminile di Torino che unisce studenti, rifugiati ed emigrati dai Paesi dell'ex URSS. Un progetto di ConVoglio ONLUS.",
+  "seoTitle": "USPR Cirillico · Calcio, basket e volley per chi parla russo a Torino",
+  "seoDescription": "USPR Cirillico: calcio, basket e volley a Torino per studenti, rifugiati ed emigrati dai Paesi dell'ex URSS. Primo allenamento gratis. Un progetto di ConVoglio OdV.",
   "back": "Progetti",
-  "tags": ["Calcio maschile", "Calcio femminile", "Torino · dal 2018"],
-  "subtitle": "UNIONE SPORTIVA PARLANTI RUSSO",
+  "tags": [
+    "Calcio",
+    "Basket",
+    "Volley",
+    "Torino, dal 2018"
+  ],
+  "subtitle": "Unione Sportiva Parlanti Russo",
   "lead": "Una squadra contro la guerra: qui l'amicizia vale più di ogni conflitto.",
   "ctaJoin": "Unisciti alla squadra",
   "ctaStory": "La nostra storia",
-  "heroImage": "",
-  "heroImageAlt": "La squadra USPR Cirillico in campo",
-  "whoKicker": "CHI GIOCA CON NOI",
+  "heroImage": "/uploads/cirillico/cover.webp",
+  "heroImageAlt": "Volantini di USPR Cirillico per calcio, basket e volley",
+  "sportsKicker": "Sport",
+  "sportsTitle": "Scegli il tuo sport.",
+  "sportsLead": "Squadre maschili e femminili. Il primo allenamento è gratis.",
+  "sports": [
+    {
+      "name": "Calcio",
+      "images": [
+        "/uploads/cirillico/calcio-2.webp",
+        "/uploads/cirillico/calcio-1.webp"
+      ]
+    },
+    {
+      "name": "Basket",
+      "images": [
+        "/uploads/cirillico/basket-2.webp",
+        "/uploads/cirillico/basket-1.webp"
+      ]
+    },
+    {
+      "name": "Volley",
+      "images": [
+        "/uploads/cirillico/volley-2.webp",
+        "/uploads/cirillico/volley-1.webp"
+      ]
+    }
+  ],
+  "flyerAlt": "Volantino {sport} di USPR Cirillico",
+  "discount": "Condizioni agevolate per donne, ragazzi under 18 e studenti.",
+  "whereLabel": "Dove ci alleniamo",
+  "where": "Via Tirreno 303, Torino",
+  "callLabel": "Telefono e WhatsApp",
+  "phone": "+39 351 431 5237",
+  "whatsapp": "393514315237",
+  "followLabel": "Instagram",
+  "whoKicker": "Chi gioca con noi",
   "whoTitle": "Lingue diverse, un solo pallone.",
   "whoLead": "Ragazze e ragazzi dai Paesi dell'ex Unione Sovietica che vivono a Torino. La squadra è aperta a chiunque condivida le nostre linee guida etiche.",
   "groups": [
-    { "code": "KZ", "title": "Studenti kazaki", "text": "Del Politecnico di Torino." },
-    { "code": "UA", "title": "Rifugiati ucraini", "text": "Arrivati a Torino dopo lo scoppio della guerra." },
-    { "code": "RU", "title": "Figli di emigrati russi", "text": "Cresciuti tra due culture." },
-    { "code": "MD", "title": "Giovani moldavi", "text": "Venuti in Italia per lavoro." }
+    {
+      "code": "KZ",
+      "title": "Studenti kazaki",
+      "text": "Del Politecnico di Torino."
+    },
+    {
+      "code": "UA",
+      "title": "Rifugiati ucraini",
+      "text": "Arrivati a Torino dopo lo scoppio della guerra."
+    },
+    {
+      "code": "RU",
+      "title": "Figli di emigrati russi",
+      "text": "Cresciuti tra due culture."
+    },
+    {
+      "code": "MD",
+      "title": "Giovani moldavi",
+      "text": "Venuti in Italia per lavoro."
+    }
   ],
-  "storyKicker": "LA NOSTRA STORIA",
+  "storyKicker": "La nostra storia",
   "storyTitle": "Da un torneo di quartiere alle pagine dei giornali.",
   "timeline": [
-    { "year": "2018", "text": "Nasce il gruppo per partecipare al Balon Mundial, il torneo delle comunità di Torino." },
-    { "year": "2022", "text": "Con la guerra in Ucraina la squadra diventa un esempio di integrazione: ne parlano media italiani e internazionali." },
-    { "year": "2022", "text": "Amichevole con l'ASD San Paolo Torino." }
+    {
+      "year": "2018",
+      "text": "Nasce il gruppo per partecipare al Balon Mundial, il torneo delle comunità di Torino."
+    },
+    {
+      "year": "2022",
+      "text": "Con la guerra in Ucraina la squadra diventa un esempio di integrazione: ne parlano media italiani e internazionali."
+    },
+    {
+      "year": "2022",
+      "text": "Amichevole con l'ASD San Paolo Torino."
+    }
   ],
   "pressTitle": "Hanno parlato di noi",
   "press": [
-    { "name": "La Stampa", "url": "" },
-    { "name": "Sprint e Sport", "url": "" },
-    { "name": "Fanpage", "url": "" },
-    { "name": "TV Svizzera", "url": "" },
-    { "name": "Futura News", "url": "" }
+    {
+      "name": "La Stampa",
+      "url": ""
+    },
+    {
+      "name": "Sprint e Sport",
+      "url": ""
+    },
+    {
+      "name": "Fanpage",
+      "url": ""
+    },
+    {
+      "name": "TV Svizzera",
+      "url": ""
+    },
+    {
+      "name": "Futura News",
+      "url": ""
+    }
   ],
   "joinTitle": "Vuoi giocare con noi?",
   "joinText": "Compila il modulo: ti ricontattiamo con giorni e orari degli allenamenti.",
@@ -39,7 +118,7 @@
   "joinLink": "https://forms.gle/dPamoQn5Lc6hvMgG8",
   "ethicsButton": "Linee guida etiche",
   "ethicsLink": "",
-  "footer": "USPR Cirillico è un progetto di ConVoglio ONLUS",
-  "instagram": "",
+  "footer": "USPR Cirillico è un progetto di ConVoglio OdV",
+  "instagram": "https://www.instagram.com/uspr_cirillico/",
   "facebook": "https://www.facebook.com/119107861500842"
 }

@@ -1,24 +1,22 @@
 ---
-import Logo from './Logo.astro';
 import { u } from '../lib/url';
 
 const links = [
-  { href: '/#chi-siamo', label: 'Chi siamo' },
+  { href: '/organizzazione/', label: 'Chi siamo' },
   { href: '/progetti/', label: 'Progetti' },
   { href: '/eventi/', label: 'Eventi' },
-  { href: '/#sostienici', label: 'Sostienici' },
-  { href: '#contatti', label: 'Contatti' },
+  { href: '/contatti/', label: 'Contatti' },
 ];
 const path = Astro.url.pathname;
-const isCurrent = (href: string) => href.endsWith('/') && href !== '/' && path.startsWith(u(href));
+const isCurrent = (href: string) => path.startsWith(u(href));
 ---
 <header class="hdr">
   <div class="wrap hdr__in">
-    <a class="brand" href={u('/')} aria-label="ConVoglio ONLUS, home">
-      <Logo />
-      <span class="brand__txt">
+    <a class="brand" href={u('/')} aria-label="ConVoglio OdV, vai alla home">
+      <img class="brand__bus" src={u('/brand/bus.webp')} alt="" width="62" height="51" />
+      <span class="brand__txt" aria-hidden="true">
         <span class="brand__name">ConVoglio</span>
-        <span class="brand__sub">ONLUS · TORINO</span>
+        <span class="brand__sub">OdV, Torino</span>
       </span>
     </a>
 
@@ -28,50 +26,62 @@ const isCurrent = (href: string) => href.endsWith('/') && href !== '/' && path.s
       ))}
     </nav>
 
-    <a class="btn btn--primary hdr__cta" href={u('/#sostienici')}>Dona ora</a>
+    <a class="btn btn--primary hdr__cta" href={u('/sostienici/')}>Sostienici</a>
 
     <details class="mnav">
       <summary aria-label="Apri il menu">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+        <svg class="ic-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+        <svg class="ic-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
       </summary>
-      <div class="mnav__panel">
-        {links.map((l) => <a href={u(l.href)}>{l.label}</a>)}
-        <a class="mnav__cta" href={u('/#sostienici')}>Dona ora</a>
-      </div>
+      <nav class="mnav__panel" aria-label="Menu">
+        {links.map((l) => <a href={u(l.href)} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a>)}
+        <a class="mnav__cta" href={u('/sostienici/')}>Sostienici</a>
+      </nav>
     </details>
   </div>
 </header>
 
 <script>
-  document.querySelectorAll<HTMLAnchorElement>('.mnav__panel a').forEach((a) =>
-    a.addEventListener('click', () => a.closest('details')?.removeAttribute('open')),
-  );
+  const menu = document.querySelector<HTMLDetailsElement>('.mnav');
+  if (menu) {
+    menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => menu.removeAttribute('open')));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.open) { menu.removeAttribute('open'); menu.querySelector('summary')?.focus(); }
+    });
+    document.addEventListener('click', (e) => {
+      if (menu.open && !menu.contains(e.target as Node)) menu.removeAttribute('open');
+    });
+  }
 </script>
 
 <style>
-  .hdr { border-bottom: 1px solid var(--line); background: #fff; position: sticky; top: 0; z-index: 40; }
+  .hdr { border-bottom: 1px solid var(--line); background: rgba(255, 255, 255, 0.96); position: sticky; top: 0; z-index: 40; backdrop-filter: saturate(1.4) blur(8px); }
   .hdr__in { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 80px; }
-  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); min-height: 48px; }
   .brand:hover { color: var(--ink); }
-  .brand :global(svg) { flex-shrink: 0; }
+  .brand__bus { width: 62px; height: auto; flex-shrink: 0; }
   .brand__txt { display: flex; flex-direction: column; line-height: 1; }
   .brand__name { font-family: var(--font-head); font-weight: 800; font-size: 24px; }
-  .brand__sub { font-size: 11px; letter-spacing: 0.14em; font-weight: 600; color: var(--muted); margin-top: 4px; }
-  .nav { display: flex; gap: 32px; }
-  .nav a { color: var(--ink); text-decoration: none; font-weight: 500; padding: 8px 0; }
-  .nav a:hover, .nav a[aria-current='page'] { color: var(--red); }
+  .brand__sub { font-size: 13px; font-weight: 500; color: var(--muted); margin-top: 5px; }
+  .nav { display: flex; gap: 8px; }
+  .nav a { color: var(--ink); text-decoration: none; font-weight: 500; padding: 10px 14px; border-radius: 999px; }
+  .nav a:hover { background: var(--soft); color: var(--ink); }
+  .nav a[aria-current='page'] { color: var(--red-dark); background: var(--tint-red); }
   .mnav { display: none; position: relative; }
-  .mnav summary { list-style: none; cursor: pointer; width: 48px; height: 48px; display: grid; place-items: center; border-radius: 12px; background: var(--soft); color: var(--ink); }
+  .mnav summary { list-style: none; cursor: pointer; width: 48px; height: 48px; display: grid; place-items: center; border-radius: 14px; background: var(--soft); color: var(--ink); }
   .mnav summary::-webkit-details-marker { display: none; }
-  .mnav__panel { position: absolute; right: 0; top: 56px; z-index: 50; min-width: 240px; background: #fff; border-radius: 16px; padding: 10px; display: flex; flex-direction: column; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18); }
-  .mnav__panel a { padding: 14px 16px; border-radius: 10px; text-decoration: none; font-weight: 600; color: var(--ink); }
-  .mnav__panel a:hover { background: var(--soft); }
+  .mnav .ic-close, .mnav[open] .ic-open { display: none; }
+  .mnav[open] .ic-close { display: block; }
+  .mnav__panel { position: absolute; right: 0; top: 58px; z-index: 50; width: min(280px, calc(100vw - 40px)); background: #fff; border-radius: 18px; padding: 10px; display: flex; flex-direction: column; box-shadow: 0 18px 48px rgba(27, 31, 42, 0.2); }
+  .mnav__panel a { padding: 14px 16px; border-radius: 12px; text-decoration: none; font-weight: 600; color: var(--ink); }
+  .mnav__panel a:hover, .mnav__panel a[aria-current='page'] { background: var(--soft); }
   .mnav__panel .mnav__cta { background: var(--red); color: #fff; text-align: center; margin-top: 6px; }
-  .mnav__panel .mnav__cta:hover { background: var(--red-dark); }
-  @media (max-width: 900px) {
+  .mnav__panel .mnav__cta:hover { background: var(--red-dark); color: #fff; }
+  @media (max-width: 960px) {
     .nav, .hdr__cta { display: none; }
     .mnav { display: block; }
     .hdr__in { height: 68px; }
+    .brand__bus { width: 52px; }
   }
-  @media (max-width: 380px) { .brand__sub { display: none; } .brand__name { font-size: 21px; } }
+  @media (max-width: 360px) { .brand__sub { display: none; } .brand__name { font-size: 21px; } }
 </style>

@@ -1,37 +1,116 @@
 {
-  "seoTitle": "USPR Cirillico · Футбол для русскоговорящих в Турине",
-  "seoDescription": "USPR Cirillico — мужская и женская футбольная команда в Турине для студентов, беженцев и эмигрантов из стран бывшего СССР. Проект ConVoglio ONLUS.",
+  "seoTitle": "USPR Cirillico · Футбол, баскетбол и волейбол для русскоговорящих в Турине",
+  "seoDescription": "USPR Cirillico: футбол, баскетбол и волейбол в Турине для студентов, беженцев и эмигрантов из стран бывшего СССР. Первая тренировка бесплатно. Проект ConVoglio OdV.",
   "back": "Проекты",
-  "tags": ["Мужской футбол", "Женский футбол", "Турин · с 2018"],
-  "subtitle": "СПОРТИВНЫЙ СОЮЗ РУССКОГОВОРЯЩИХ",
+  "tags": [
+    "Футбол",
+    "Баскетбол",
+    "Волейбол",
+    "Турин, с 2018"
+  ],
+  "subtitle": "Спортивный союз русскоговорящих",
   "lead": "Команда против войны: здесь дружба сильнее любого конфликта.",
   "ctaJoin": "Вступить в команду",
   "ctaStory": "Наша история",
   "heroImage": "",
-  "heroImageAlt": "Команда USPR Cirillico на поле",
-  "whoKicker": "КТО ИГРАЕТ С НАМИ",
+  "heroImageAlt": "Флаеры USPR Cirillico: футбол, баскетбол, волейбол",
+  "sportsKicker": "Спорт",
+  "sportsTitle": "Выбирай свой спорт.",
+  "sportsLead": "Мужские и женские команды. Первая тренировка бесплатно.",
+  "sports": [
+    {
+      "name": "Футбол",
+      "images": [
+        "/uploads/cirillico/calcio-2.webp",
+        "/uploads/cirillico/calcio-1.webp"
+      ]
+    },
+    {
+      "name": "Баскетбол",
+      "images": [
+        "/uploads/cirillico/basket-2.webp",
+        "/uploads/cirillico/basket-1.webp"
+      ]
+    },
+    {
+      "name": "Волейбол",
+      "images": [
+        "/uploads/cirillico/volley-2.webp",
+        "/uploads/cirillico/volley-1.webp"
+      ]
+    }
+  ],
+  "flyerAlt": "Флаер USPR Cirillico: {sport}",
+  "discount": "Для женщин, ребят до 18 лет и студентов — специальные льготные условия.",
+  "whereLabel": "Где тренируемся",
+  "where": "Via Tirreno 303, Турин",
+  "callLabel": "Телефон и WhatsApp",
+  "phone": "+39 351 431 5237",
+  "whatsapp": "393514315237",
+  "followLabel": "Instagram",
+  "whoKicker": "Кто играет с нами",
   "whoTitle": "Разные языки, один мяч.",
   "whoLead": "Девушки и парни из стран бывшего Советского Союза, которые живут в Турине. Команда открыта для всех, кто разделяет наши этические принципы.",
   "groups": [
-    { "code": "KZ", "title": "Студенты из Казахстана", "text": "Из Туринского политехнического университета." },
-    { "code": "UA", "title": "Беженцы из Украины", "text": "Приехали в Турин после начала войны." },
-    { "code": "RU", "title": "Дети эмигрантов из России", "text": "Выросли между двумя культурами." },
-    { "code": "MD", "title": "Молодёжь из Молдовы", "text": "Приехали в Италию на работу." }
+    {
+      "code": "KZ",
+      "title": "Студенты из Казахстана",
+      "text": "Из Туринского политехнического университета."
+    },
+    {
+      "code": "UA",
+      "title": "Беженцы из Украины",
+      "text": "Приехали в Турин после начала войны."
+    },
+    {
+      "code": "RU",
+      "title": "Дети эмигрантов из России",
+      "text": "Выросли между двумя культурами."
+    },
+    {
+      "code": "MD",
+      "title": "Молодёжь из Молдовы",
+      "text": "Приехали в Италию на работу."
+    }
   ],
-  "storyKicker": "НАША ИСТОРИЯ",
+  "storyKicker": "Наша история",
   "storyTitle": "От районного турнира до страниц газет.",
   "timeline": [
-    { "year": "2018", "text": "Команда собирается, чтобы сыграть на Balon Mundial — турнире общин Турина." },
-    { "year": "2022", "text": "С началом войны в Украине команда становится примером интеграции: о ней пишут итальянские и международные СМИ." },
-    { "year": "2022", "text": "Товарищеский матч с ASD San Paolo Torino." }
+    {
+      "year": "2018",
+      "text": "Команда собирается, чтобы сыграть на Balon Mundial — турнире общин Турина."
+    },
+    {
+      "year": "2022",
+      "text": "С началом войны в Украине команда становится примером интеграции: о ней пишут итальянские и международные СМИ."
+    },
+    {
+      "year": "2022",
+      "text": "Товарищеский матч с ASD San Paolo Torino."
+    }
   ],
   "pressTitle": "О нас писали",
   "press": [
-    { "name": "La Stampa", "url": "" },
-    { "name": "Sprint e Sport", "url": "" },
-    { "name": "Fanpage", "url": "" },
-    { "name": "TV Svizzera", "url": "" },
-    { "name": "Futura News", "url": "" }
+    {
+      "name": "La Stampa",
+      "url": ""
+    },
+    {
+      "name": "Sprint e Sport",
+      "url": ""
+    },
+    {
+      "name": "Fanpage",
+      "url": ""
+    },
+    {
+      "name": "TV Svizzera",
+      "url": ""
+    },
+    {
+      "name": "Futura News",
+      "url": ""
+    }
   ],
   "joinTitle": "Хочешь играть с нами?",
   "joinText": "Заполни анкету, и мы напишем тебе дни и время тренировок.",
@@ -39,7 +118,7 @@
   "joinLink": "https://forms.gle/dPamoQn5Lc6hvMgG8",
   "ethicsButton": "Этические принципы",
   "ethicsLink": "",
-  "footer": "USPR Cirillico — проект ConVoglio ONLUS",
-  "instagram": "",
+  "footer": "USPR Cirillico — проект ConVoglio OdV",
+  "instagram": "https://www.instagram.com/uspr_cirillico/",
   "facebook": "https://www.facebook.com/119107861500842"
 }

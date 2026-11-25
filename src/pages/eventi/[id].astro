@@ -12,20 +12,21 @@ export async function getStaticPaths() {
 const { e } = Astro.props;
 const { Content } = await render(e);
 const hasBody = !!e.body?.trim();
-const meta = [e.data.category, e.data.date, e.data.place].filter(Boolean).join(' · ');
-const description = e.data.summary || `${e.data.title}: un evento solidale di ConVoglio ONLUS a Torino.`;
+const meta = [e.data.category, e.data.date].filter(Boolean).join(', ');
+const description = e.data.summary || `${e.data.title}: un evento solidale di ConVoglio OdV a Torino.`;
 ---
-<Base title={`${e.data.title} · Eventi ConVoglio`} description={description} image={e.data.image || undefined}>
+<Base title={`${e.data.title} · Eventi ConVoglio OdV`} description={description} image={e.data.image || undefined}>
   <section class="section top">
     <div class="wrap">
-      <a class="back" href={u('/eventi/')}>← Tutti gli eventi</a>
-      <div class="head">
+      <a class="back" href={u('/eventi/')}>Tutti gli eventi</a>
+      <div class:list={["head", !e.data.image && "head--solo"]}>
         <div>
           {meta && <p class="kicker">{meta}</p>}
           <h1>{e.data.title}</h1>
           {e.data.summary && <p class="lead">{e.data.summary}</p>}
+          {e.data.place && <p class="place">{e.data.place}</p>}
         </div>
-        <div class="media"><Media src={e.data.image} alt={e.data.imageAlt} tone="yellow" eager /></div>
+        {e.data.image && <div class="media"><Media src={e.data.image} alt={e.data.imageAlt} tone="yellow" fit={e.data.imageFit} eager /></div>}
       </div>
     </div>
   </section>
@@ -49,14 +50,16 @@ const description = e.data.summary || `${e.data.title}: un evento solidale di Co
 
 <style>
   .top { padding-bottom: 48px; }
-  .back { display: inline-block; margin-bottom: 32px; font-weight: 600; text-decoration: none; }
+  .back { display: inline-flex; align-items: center; min-height: 44px; margin-bottom: 20px; font-weight: 600; }
   .head { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 48px; align-items: center; }
+  .head--solo { grid-template-columns: minmax(0, 1fr); max-width: 820px; }
   h1 { font-size: clamp(40px, 5.4vw, 60px); font-weight: 800; }
-  .media { height: 360px; border-radius: 28px; overflow: hidden; }
+  .media { aspect-ratio: 4 / 3; border-radius: 28px; overflow: hidden; }
   .body { padding-top: 0; }
+  .place { margin-top: 16px; font-weight: 600; }
   .empty { background: var(--soft); border-radius: 28px; padding: 48px; display: flex; flex-direction: column; gap: 16px; max-width: 820px; }
   .empty h2 { font-size: 28px; font-weight: 800; }
   .empty p { color: var(--muted); }
   .row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
-  @media (max-width: 600px) { .media { height: 240px; } .empty { padding: 28px 22px; } }
+  @media (max-width: 600px) { .empty { padding: 28px 22px; } }
 </style>
