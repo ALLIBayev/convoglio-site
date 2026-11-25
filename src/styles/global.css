@@ -1,0 +1,114 @@
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+@import '@fontsource/bricolage-grotesque/600.css';
+@import '@fontsource/bricolage-grotesque/800.css';
+
+:root {
+  --ink: #1b1f2a;
+  --muted: #5b6170;
+  --line: #e6e8ec;
+  --soft: #f2f4f7;
+  --white: #ffffff;
+  --red: #c8401f;
+  --red-dark: #a9351a;
+  --yellow: #f2b33d;
+  --yellow-dark: #e0a12b;
+  --teal: #0e6e66;
+  --teal-dark: #0a524c;
+  --night: #1b1f2a;
+  --night-2: #2b3040;
+
+  --tint-blue: #e4ebf6;
+  --tint-yellow: #fdf0d5;
+  --tint-red: #fbe2da;
+  --tint-green: #dcefec;
+
+  --radius: 22px;
+  --wrap: 1200px;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-head: 'Bricolage Grotesque', 'Inter', system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--white);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, svg { max-width: 100%; display: block; }
+h1, h2, h3 { font-family: var(--font-head); margin: 0; line-height: 1.08; letter-spacing: -0.01em; text-wrap: balance; }
+p { margin: 0; text-wrap: pretty; }
+a { color: var(--teal); }
+a:hover { color: var(--teal-dark); }
+:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; border-radius: 6px; }
+
+.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 24px; }
+.section { padding: 96px 0; }
+.section--soft { background: var(--soft); }
+.kicker { font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--red); margin-bottom: 12px; }
+.h2 { font-size: clamp(34px, 4.4vw, 44px); font-weight: 800; }
+.lead { font-size: 18px; color: var(--muted); max-width: 640px; margin-top: 16px; }
+.section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-bottom: 40px; }
+.more { font-weight: 600; }
+
+.skip { position: absolute; left: -9999px; top: 0; background: var(--ink); color: #fff; padding: 12px 16px; z-index: 100; }
+.skip:focus { left: 12px; top: 12px; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 0 22px; border-radius: 999px;
+  font: 600 16px/1 var(--font-body); text-decoration: none; cursor: pointer;
+  border: 2px solid transparent; transition: background-color .15s, color .15s, border-color .15s;
+}
+.btn--primary { background: var(--red); color: #fff; }
+.btn--primary:hover { background: var(--red-dark); color: #fff; }
+.btn--ghost { background: transparent; color: var(--ink); border-color: var(--ink); }
+.btn--ghost:hover { background: var(--ink); color: #fff; }
+.btn--yellow { background: var(--yellow); color: var(--ink); }
+.btn--yellow:hover { background: var(--yellow-dark); color: var(--ink); }
+.btn--line { background: transparent; color: #fff; border-color: #fff; }
+.btn--line:hover { background: #fff; color: var(--ink); }
+.btn--white { background: #fff; color: var(--red); }
+.btn--white:hover { background: var(--tint-red); color: var(--red-dark); }
+
+/* Grids & cards */
+.grid { display: grid; gap: 16px; }
+.grid--3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.grid--4 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+.card { background: #fff; border-radius: var(--radius); padding: 32px; }
+.card--soft { background: var(--soft); }
+.card h3 { font-size: 22px; font-weight: 600; margin-bottom: 10px; }
+.card p { color: var(--muted); font-size: 15px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip {
+  display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px;
+  border: 1px solid var(--line); border-radius: 999px; font-size: 15px; color: var(--ink); text-decoration: none; background: #fff;
+}
+.chip:hover { border-color: var(--ink); color: var(--ink); }
+
+.prose { max-width: 720px; font-size: 18px; color: var(--ink); }
+.prose p, .prose ul, .prose ol { margin: 0 0 1.1em; }
+.prose h2 { font-size: 28px; margin: 1.6em 0 .6em; }
+.prose h3 { font-size: 22px; margin: 1.4em 0 .5em; }
+.prose img { border-radius: 16px; margin: 1.4em 0; height: auto; }
+
+@media (max-width: 600px) {
+  .section { padding: 64px 0; }
+  .card { padding: 24px; }
+  .wrap { padding: 0 20px; }
+}

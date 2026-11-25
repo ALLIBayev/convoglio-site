@@ -1,0 +1,221 @@
+# Pages CMS (https://pagescms.org) — simple editor for ConVoglio.
+# Log in at app.pagescms.org with GitHub, open this repository, and edit.
+# Every save is a commit; the site rebuilds automatically in ~1 minute.
+
+media:
+  input: public/uploads
+  output: /uploads
+
+content:
+  - name: projects
+    label: Progetti
+    type: collection
+    path: src/content/projects
+    format: yaml-frontmatter
+    filename: "{primary}.md"
+    view:
+      primary: title
+      sort: order
+      order: asc
+    fields:
+      - { name: title, label: Titolo, type: string, required: true }
+      - { name: summary, label: "Descrizione breve (card)", type: text }
+      - { name: image, label: Foto, type: image }
+      - { name: imageAlt, label: "Descrizione della foto (accessibilità)", type: string }
+      - { name: order, label: "Ordine (1 = primo)", type: number }
+      - { name: featured, label: "In evidenza in home", type: boolean }
+      - name: color
+        label: "Colore della card"
+        type: select
+        options:
+          values: [dark, blue, yellow, red, green]
+      - { name: link, label: "Link a una pagina esterna (opzionale)", type: string }
+      - { name: body, label: "Testo della pagina del progetto", type: rich-text }
+
+  - name: events
+    label: Eventi
+    type: collection
+    path: src/content/events
+    format: yaml-frontmatter
+    filename: "{primary}.md"
+    view:
+      primary: title
+      sort: order
+      order: asc
+    fields:
+      - { name: title, label: Titolo, type: string, required: true }
+      - { name: category, label: "Tipo (es. Spettacolo, Natale)", type: string }
+      - { name: date, label: "Data (es. 14 dicembre 2026)", type: string }
+      - { name: place, label: Luogo, type: string }
+      - { name: summary, label: "Descrizione breve", type: text }
+      - { name: image, label: Foto, type: image }
+      - { name: imageAlt, label: "Descrizione della foto", type: string }
+      - { name: order, label: "Ordine (1 = primo)", type: number }
+      - { name: body, label: "Testo della pagina dell'evento", type: rich-text }
+
+  - name: home
+    label: "Home page"
+    type: file
+    path: src/content/settings/home.json
+    format: json
+    fields:
+      - { name: seoTitle, label: "Titolo per Google", type: string }
+      - name: hero
+        label: "Apertura"
+        type: object
+        fields:
+          - { name: badge, label: Etichetta, type: string }
+          - { name: title, label: Titolo, type: string }
+          - { name: lead, label: Testo, type: text }
+          - { name: image, label: Foto, type: image }
+          - { name: imageAlt, label: "Descrizione della foto", type: string }
+      - name: about
+        label: "Chi siamo"
+        type: object
+        fields:
+          - { name: title, label: Titolo, type: string }
+          - { name: lead, label: Testo, type: text }
+          - name: pillars
+            label: "Tre punti"
+            type: object
+            list: true
+            fields:
+              - { name: title, label: Titolo, type: string }
+              - { name: text, label: Testo, type: text }
+      - name: events
+        label: "Sezione eventi"
+        type: object
+        fields:
+          - { name: title, label: Titolo, type: string }
+          - { name: lead, label: Testo, type: text }
+      - name: support
+        label: Sostienici
+        type: object
+        fields:
+          - { name: title, label: Titolo, type: string }
+          - { name: fiveTitle, label: "5x1000 · titolo", type: string }
+          - { name: fiveText, label: "5x1000 · testo", type: text }
+          - { name: donateTitle, label: "Donazione · titolo", type: string }
+          - { name: donateText, label: "Donazione · testo", type: text }
+          - { name: volunteerTitle, label: "Volontari · titolo", type: string }
+          - { name: volunteerText, label: "Volontari · testo", type: text }
+      - name: newsletter
+        label: "Resta sul treno"
+        type: object
+        fields:
+          - { name: title, label: Titolo, type: string }
+          - { name: text, label: Testo, type: text }
+
+  - name: site
+    label: "Contatti e donazioni"
+    type: file
+    path: src/content/settings/site.json
+    format: json
+    fields:
+      - { name: name, label: Nome, type: string }
+      - { name: legalName, label: "Nome legale", type: string }
+      - { name: tagline, label: Sottotitolo, type: string }
+      - { name: description, label: "Descrizione per Google", type: text }
+      - { name: fiscalCode, label: "Codice fiscale", type: string }
+      - { name: address, label: Indirizzo, type: string }
+      - { name: addressNote, label: "Nota indirizzo", type: string }
+      - { name: phone, label: Telefono, type: string }
+      - { name: email, label: Email, type: string }
+      - { name: facebook, label: "Link Facebook", type: string }
+      - { name: instagram, label: "Link Instagram", type: string }
+      - name: donations
+        label: Donazioni
+        type: object
+        fields:
+          - { name: paypal, label: "Link PayPal (es. paypal.me/...)", type: string }
+          - { name: satispay, label: "Link Satispay", type: string }
+          - { name: iban, label: IBAN, type: string }
+          - { name: ibanHolder, label: "Intestatario del conto", type: string }
+      - { name: volunteerLink, label: "Link modulo volontari (opzionale)", type: string }
+      - { name: newsletterLink, label: "Link iscrizione aggiornamenti (opzionale)", type: string }
+      - { name: documentsLink, label: "Link documenti / bilanci (opzionale)", type: string }
+      - { name: ogImage, label: "Immagine per anteprima link", type: image }
+
+  - name: network
+    label: Network
+    type: file
+    path: src/content/settings/network.json
+    format: json
+    fields:
+      - { name: title, label: Titolo, type: string }
+      - name: partners
+        label: Partner
+        type: object
+        list: true
+        fields:
+          - { name: name, label: Nome, type: string }
+          - { name: url, label: Sito, type: string }
+          - { name: logo, label: Logo, type: image }
+
+  - name: cirillico-it
+    label: "Cirillico · Italiano"
+    type: file
+    path: src/content/cirillico/it.json
+    format: json
+    fields: &cirillico
+      - { name: seoTitle, label: "Titolo per Google", type: string }
+      - { name: seoDescription, label: "Descrizione per Google", type: text }
+      - { name: back, label: "Testo link indietro", type: string }
+      - { name: tags, label: Etichette, type: string, list: true }
+      - { name: subtitle, label: Sottotitolo, type: string }
+      - { name: lead, label: Frase, type: text }
+      - { name: ctaJoin, label: "Pulsante unisciti", type: string }
+      - { name: ctaStory, label: "Pulsante storia", type: string }
+      - { name: heroImage, label: "Foto principale", type: image }
+      - { name: heroImageAlt, label: "Descrizione della foto", type: string }
+      - { name: whoKicker, label: "Chi gioca · etichetta", type: string }
+      - { name: whoTitle, label: "Chi gioca · titolo", type: string }
+      - { name: whoLead, label: "Chi gioca · testo", type: text }
+      - name: groups
+        label: Gruppi
+        type: object
+        list: true
+        fields:
+          - { name: code, label: Sigla, type: string }
+          - { name: title, label: Titolo, type: string }
+          - { name: text, label: Testo, type: string }
+      - { name: storyKicker, label: "Storia · etichetta", type: string }
+      - { name: storyTitle, label: "Storia · titolo", type: string }
+      - name: timeline
+        label: Tappe
+        type: object
+        list: true
+        fields:
+          - { name: year, label: Anno, type: string }
+          - { name: text, label: Testo, type: text }
+      - { name: pressTitle, label: "Stampa · titolo", type: string }
+      - name: press
+        label: "Articoli"
+        type: object
+        list: true
+        fields:
+          - { name: name, label: Testata, type: string }
+          - { name: url, label: "Link all'articolo", type: string }
+      - { name: joinTitle, label: "Iscrizione · titolo", type: string }
+      - { name: joinText, label: "Iscrizione · testo", type: text }
+      - { name: joinButton, label: "Iscrizione · pulsante", type: string }
+      - { name: joinLink, label: "Link modulo iscrizione", type: string }
+      - { name: ethicsButton, label: "Linee guida · pulsante", type: string }
+      - { name: ethicsLink, label: "Link linee guida etiche", type: string }
+      - { name: footer, label: "Testo in fondo", type: string }
+      - { name: instagram, label: "Link Instagram", type: string }
+      - { name: facebook, label: "Link Facebook", type: string }
+
+  - name: cirillico-ru
+    label: "Cirillico · Русский"
+    type: file
+    path: src/content/cirillico/ru.json
+    format: json
+    fields: *cirillico
+
+  - name: cirillico-en
+    label: "Cirillico · English"
+    type: file
+    path: src/content/cirillico/en.json
+    format: json
+    fields: *cirillico

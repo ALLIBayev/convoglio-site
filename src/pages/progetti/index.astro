@@ -1,0 +1,24 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base title="Progetti · ConVoglio ONLUS" description="Tutti i progetti di ConVoglio ONLUS, associazione di volontariato a Torino.">
+  <section class="section">
+    <div class="wrap">
+      <p class="kicker">Progetti</p>
+      <h1 class="h1">I nostri progetti</h1>
+      <p class="lead">Sport, feste, iniziative solidali: ecco tutti i progetti che portiamo avanti con i nostri volontari.</p>
+      <div class="grid grid--3 list">
+        {projects.map((p) => <ProjectCard id={p.id} data={p.data} />)}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .h1 { font-size: clamp(40px, 5.4vw, 60px); font-weight: 800; }
+  .list { margin-top: 48px; gap: 20px; }
+</style>

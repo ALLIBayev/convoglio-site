@@ -1,0 +1,9 @@
+{
+  "title": "Il nostro network",
+  "partners": [
+    { "name": "Centro Puzzle · Minipuzzle", "url": "https://www.centropuzzle.it/minipuzzle/", "logo": "" },
+    { "name": "Progetto Mitofusina 2", "url": "https://www.progettomitofusina2.com/", "logo": "" },
+    { "name": "Volontariato Torino · Vol.To", "url": "https://volontariatotorino.it/", "logo": "" },
+    { "name": "Terza Settimana", "url": "https://www.terzasettimana.org/", "logo": "" }
+  ]
+}

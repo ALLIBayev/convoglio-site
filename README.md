@@ -1,0 +1,64 @@
+# ConVoglio ONLUS — sito
+
+Sito statico in [Astro](https://astro.build), ospitato su GitHub Pages, con editor [Pages CMS](https://pagescms.org) per i testi.
+
+## Pagine
+
+| Percorso | Contenuto |
+|---|---|
+| `/` | Home: chi siamo, progetti, eventi, sostienici, network |
+| `/progetti/` e `/progetti/<nome>/` | Tutti i progetti e una pagina per ciascuno |
+| `/cirillico/` · `/cirillico/ru/` · `/cirillico/en/` | USPR Cirillico in italiano, russo e inglese |
+| `/eventi/` e `/eventi/<nome>/` | Archivio eventi |
+| `/privacy/` | Informativa privacy (nessun cookie) |
+
+## Dove sono i testi
+
+Tutto il contenuto è fuori dal codice, così si modifica dall'editor:
+
+- `src/content/settings/site.json`: contatti, codice fiscale, PayPal / Satispay / IBAN, link
+- `src/content/settings/home.json`: testi della home
+- `src/content/settings/network.json`: partner e loghi
+- `src/content/projects/*.md`: un file per progetto
+- `src/content/events/*.md`: un file per evento
+- `src/content/cirillico/{it,ru,en}.json`: pagina Cirillico
+- `public/uploads/`: foto e loghi caricati dall'editor
+
+Se un campo è vuoto (foto, IBAN, PayPal…), il sito non mostra un buco: mette un riquadro con il logo o nasconde il pulsante.
+
+## Sviluppo
+
+```bash
+npm install
+npm run dev      # http://localhost:4321
+npm run build    # output in dist/
+```
+
+## Pubblicazione
+
+1. Repository nell'organizzazione GitHub di ConVoglio → **Settings → Pages → Source: GitHub Actions**.
+2. Ogni push su `main` pubblica il sito (`.github/workflows/deploy.yml`).
+3. Variabili del repository (**Settings → Secrets and variables → Actions → Variables**):
+   - `SITE_URL` = `https://www.<dominio>` (per canonical, sitemap, anteprime link)
+   - `BASE_PATH` = vuoto con il dominio proprio; `/<nome-repo>/` solo per un'anteprima su `*.github.io/<nome-repo>/`.
+
+### Dominio su Aruba
+
+1. GitHub: **Settings → Pages → Custom domain** → `www.<dominio>`. Poi aggiungere `public/CNAME` con lo stesso valore.
+2. Aruba → Gestione DNS:
+   - eliminare i record di Google Sites (`www` → `ghs.googlehosted.com` e gli A di Google);
+   - A `@` → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`;
+   - CNAME `www` → `<organizzazione>.github.io`;
+   - **non toccare i record MX** (email).
+3. Dopo il certificato: **Enforce HTTPS**.
+4. Google Search Console: verificare il dominio e inviare `sitemap-index.xml`.
+
+Per tornare a Google Sites basta rimettere i vecchi record su Aruba e ricollegare il dominio dal Google Site.
+
+## Editor (Pages CMS)
+
+1. Andare su [app.pagescms.org](https://app.pagescms.org) e accedere con GitHub.
+2. Scegliere il repository: compaiono le sezioni Progetti, Eventi, Home page, Contatti e donazioni, Network, Cirillico.
+3. Modificare, salvare: il sito si aggiorna da solo in circa un minuto.
+
+La configurazione è in `.pages.yml`.

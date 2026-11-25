@@ -1,0 +1,37 @@
+---
+interface Props { value: string; label: string; variant?: 'onred' | 'light' }
+const { value, label, variant = 'light' } = Astro.props;
+---
+<div class:list={['copy', `copy--${variant}`]}>
+  <span class="copy__val" aria-label={label}>{value}</span>
+  <button type="button" class="copy__btn" data-copy={value} aria-label={`Copia ${label}`}>Copia</button>
+  <span class="copy__live" aria-live="polite"></span>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((b) => {
+    b.addEventListener('click', async () => {
+      const live = b.parentElement?.querySelector('.copy__live');
+      try {
+        await navigator.clipboard.writeText(b.dataset.copy || '');
+        b.textContent = 'Copiato!';
+        if (live) live.textContent = 'Copiato negli appunti';
+      } catch {
+        b.textContent = 'Seleziona e copia';
+      }
+      setTimeout(() => { b.textContent = 'Copia'; if (live) live.textContent = ''; }, 2000);
+    });
+  });
+</script>
+
+<style>
+  .copy { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-radius: 14px; padding: 10px 10px 10px 16px; flex-wrap: wrap; }
+  .copy--onred { background: rgba(255, 255, 255, 0.16); color: #fff; }
+  .copy--light { background: #fff; border: 1px solid var(--line); color: var(--ink); }
+  .copy__val { font-family: var(--font-head); font-weight: 800; font-size: 20px; letter-spacing: 0.02em; word-break: break-all; user-select: all; }
+  .copy--light .copy__val { font-family: var(--font-body); font-size: 15px; font-weight: 600; }
+  .copy__btn { min-height: 40px; padding: 0 16px; border-radius: 999px; border: 0; font: 600 14px var(--font-body); cursor: pointer; }
+  .copy--onred .copy__btn { background: #fff; color: var(--red); }
+  .copy--light .copy__btn { background: var(--ink); color: #fff; }
+  .copy__live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>

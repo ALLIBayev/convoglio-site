@@ -1,0 +1,45 @@
+{
+  "seoTitle": "USPR Cirillico · Calcio per chi parla russo a Torino",
+  "seoDescription": "USPR Cirillico è una squadra di calcio maschile e femminile di Torino che unisce studenti, rifugiati ed emigrati dai Paesi dell'ex URSS. Un progetto di ConVoglio ONLUS.",
+  "back": "Progetti",
+  "tags": ["Calcio maschile", "Calcio femminile", "Torino · dal 2018"],
+  "subtitle": "UNIONE SPORTIVA PARLANTI RUSSO",
+  "lead": "Una squadra contro la guerra: qui l'amicizia vale più di ogni conflitto.",
+  "ctaJoin": "Unisciti alla squadra",
+  "ctaStory": "La nostra storia",
+  "heroImage": "",
+  "heroImageAlt": "La squadra USPR Cirillico in campo",
+  "whoKicker": "CHI GIOCA CON NOI",
+  "whoTitle": "Lingue diverse, un solo pallone.",
+  "whoLead": "Ragazze e ragazzi dai Paesi dell'ex Unione Sovietica che vivono a Torino. La squadra è aperta a chiunque condivida le nostre linee guida etiche.",
+  "groups": [
+    { "code": "KZ", "title": "Studenti kazaki", "text": "Del Politecnico di Torino." },
+    { "code": "UA", "title": "Rifugiati ucraini", "text": "Arrivati a Torino dopo lo scoppio della guerra." },
+    { "code": "RU", "title": "Figli di emigrati russi", "text": "Cresciuti tra due culture." },
+    { "code": "MD", "title": "Giovani moldavi", "text": "Venuti in Italia per lavoro." }
+  ],
+  "storyKicker": "LA NOSTRA STORIA",
+  "storyTitle": "Da un torneo di quartiere alle pagine dei giornali.",
+  "timeline": [
+    { "year": "2018", "text": "Nasce il gruppo per partecipare al Balon Mundial, il torneo delle comunità di Torino." },
+    { "year": "2022", "text": "Con la guerra in Ucraina la squadra diventa un esempio di integrazione: ne parlano media italiani e internazionali." },
+    { "year": "2022", "text": "Amichevole con l'ASD San Paolo Torino." }
+  ],
+  "pressTitle": "Hanno parlato di noi",
+  "press": [
+    { "name": "La Stampa", "url": "" },
+    { "name": "Sprint e Sport", "url": "" },
+    { "name": "Fanpage", "url": "" },
+    { "name": "TV Svizzera", "url": "" },
+    { "name": "Futura News", "url": "" }
+  ],
+  "joinTitle": "Vuoi giocare con noi?",
+  "joinText": "Compila il modulo: ti ricontattiamo con giorni e orari degli allenamenti.",
+  "joinButton": "Compila il modulo",
+  "joinLink": "https://forms.gle/dPamoQn5Lc6hvMgG8",
+  "ethicsButton": "Linee guida etiche",
+  "ethicsLink": "",
+  "footer": "USPR Cirillico è un progetto di ConVoglio ONLUS",
+  "instagram": "",
+  "facebook": "https://www.facebook.com/119107861500842"
+}

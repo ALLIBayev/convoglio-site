@@ -1,0 +1,45 @@
+{
+  "seoTitle": "ConVoglio ONLUS · Associazione di volontariato a Torino",
+  "hero": {
+    "badge": "Associazione di volontariato · Torino",
+    "title": "Eventi che diventano aiuto concreto.",
+    "lead": "Organizziamo spettacoli, tornei e iniziative solidali. I fondi raccolti sostengono persone in difficoltà, la ricerca medica, l'ambiente e il contrasto alla violenza.",
+    "image": "",
+    "imageAlt": "Volontari di ConVoglio a un evento"
+  },
+  "about": {
+    "title": "Mettiamo la nostra esperienza al servizio di chi aiuta.",
+    "lead": "Aiutiamo persone e associazioni che hanno bisogno di competenze per organizzare eventi di raccolta fondi per cause benefiche.",
+    "pillars": [
+      {
+        "title": "Beneficenza indiretta",
+        "text": "Mettiamo i fondi raccolti a disposizione delle associazioni che fanno beneficenza diretta ma non hanno risorse per i loro progetti."
+      },
+      {
+        "title": "Vicini a chi è in difficoltà",
+        "text": "Sosteniamo chi vive povertà, solitudine o emarginazione e aiutiamo ognuno a sviluppare le proprie capacità."
+      },
+      {
+        "title": "Solidarietà tra generazioni",
+        "text": "Offriamo ai giovani attività costruttive per il tempo libero e agli anziani un luogo dove la loro esperienza conta."
+      }
+    ]
+  },
+  "events": {
+    "title": "Ogni evento è un vagone in più.",
+    "lead": "Spettacoli, corse, tornei e feste per bambini: ogni evento raccoglie fondi per chi ne ha bisogno."
+  },
+  "support": {
+    "title": "Tre modi per salire a bordo",
+    "fiveTitle": "5×1000",
+    "fiveText": "Non ti costa nulla: nella dichiarazione dei redditi firma e scrivi il nostro codice fiscale.",
+    "donateTitle": "Fai una donazione",
+    "donateText": "Con bonifico, Satispay o PayPal: sostieni direttamente i nostri progetti.",
+    "volunteerTitle": "Diventa volontario",
+    "volunteerText": "Hai tempo, idee o competenze? Aiutaci a organizzare il prossimo evento."
+  },
+  "newsletter": {
+    "title": "Resta sul treno",
+    "text": "Ricevi i prossimi eventi e scopri come partecipare. Niente spam."
+  }
+}

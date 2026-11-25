@@ -1,0 +1,33 @@
+---
+import Media from './Media.astro';
+import { u, isExternal } from '../lib/url';
+
+interface Props {
+  id: string;
+  data: { title: string; summary: string; image: string; imageAlt: string; color: string; link: string };
+}
+const { id, data } = Astro.props;
+const href = data.link ? u(data.link) : u(`/progetti/${id}/`);
+const ext = isExternal(data.link);
+---
+<a class="pcard" href={href} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined}>
+  <div class="pcard__img">
+    <Media src={data.image} alt={data.imageAlt} tone={data.color as any} />
+  </div>
+  <div class="pcard__body">
+    <h3>{data.title}</h3>
+    {data.summary && <p>{data.summary}</p>}
+    <span class="pcard__more">{ext ? 'Visita il sito ↗' : 'Scopri di più →'}</span>
+  </div>
+</a>
+
+<style>
+  .pcard { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; text-decoration: none; color: var(--ink); background: #fff; transition: border-color .15s, transform .15s; }
+  .pcard:hover { color: var(--ink); border-color: #c5cad3; transform: translateY(-2px); }
+  .pcard__img { height: 160px; }
+  .pcard__body { padding: 22px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .pcard h3 { font-size: 20px; font-weight: 600; }
+  .pcard p { font-size: 15px; color: var(--muted); }
+  .pcard__more { margin-top: auto; padding-top: 8px; font-size: 14px; font-weight: 600; color: var(--teal); }
+  @media (prefers-reduced-motion: reduce) { .pcard { transition: none; } .pcard:hover { transform: none; } }
+</style>

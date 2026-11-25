@@ -1,0 +1,23 @@
+{
+  "name": "ConVoglio",
+  "legalName": "ConVoglio ONLUS",
+  "tagline": "Associazione di volontariato · Torino",
+  "description": "ConVoglio è un'associazione di volontariato di Torino: organizziamo spettacoli, tornei e iniziative solidali e mettiamo i fondi raccolti al servizio di chi aiuta.",
+  "fiscalCode": "97785290012",
+  "address": "Via Giolitti 21, 10123 Torino",
+  "addressNote": "presso il Centro Servizi Vol.To",
+  "phone": "+39 351 431 5237",
+  "email": "infoconvoglio@gmail.com",
+  "facebook": "https://www.facebook.com/ConVoglioonlus",
+  "instagram": "https://www.instagram.com/convoglioonlus",
+  "donations": {
+    "paypal": "",
+    "satispay": "",
+    "iban": "",
+    "ibanHolder": "ConVoglio ONLUS"
+  },
+  "volunteerLink": "",
+  "newsletterLink": "",
+  "documentsLink": "",
+  "ogImage": "/og-image.png"
+}

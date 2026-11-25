@@ -1,0 +1,39 @@
+---
+import { u } from '../lib/url';
+import Logo from './Logo.astro';
+
+interface Props {
+  src?: string;
+  alt?: string;
+  tone?: 'soft' | 'dark' | 'blue' | 'yellow' | 'red' | 'green';
+  class?: string;
+  eager?: boolean;
+}
+const { src, alt = '', tone = 'soft', class: cls, eager = false } = Astro.props;
+---
+{src ? (
+  <img
+    class:list={['media', cls]}
+    src={u(src)}
+    alt={alt}
+    loading={eager ? 'eager' : 'lazy'}
+    decoding="async"
+    fetchpriority={eager ? 'high' : undefined}
+  />
+) : (
+  <div class:list={['media', 'media--ph', `media--${tone}`, cls]} aria-hidden="true">
+    <Logo size={64} mono />
+  </div>
+)}
+
+<style>
+  .media { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .media--ph { display: grid; place-items: center; }
+  .media--ph :global(svg) { opacity: 0.35; }
+  .media--soft { background: #e9ecf1; color: #9aa1ae; }
+  .media--dark { background: var(--night-2); color: #8b93a5; }
+  .media--blue { background: var(--tint-blue); color: #7d93bb; }
+  .media--yellow { background: var(--tint-yellow); color: #c49a3c; }
+  .media--red { background: var(--tint-red); color: #d0826c; }
+  .media--green { background: var(--tint-green); color: #5c9f97; }
+</style>

@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import { u } from '../lib/url';
+---
+<Base title="Pagina non trovata · ConVoglio ONLUS" noindex>
+  <section class="section nf">
+    <div class="wrap">
+      <p class="kicker">Errore 404</p>
+      <h1>Questo vagone non c'è.</h1>
+      <p class="lead">La pagina che cerchi è stata spostata o non esiste più.</p>
+      <div class="row">
+        <a class="btn btn--primary" href={u('/')}>Torna alla home</a>
+        <a class="btn btn--ghost" href={u('/progetti/')}>Vedi i progetti</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf { padding: 140px 0; }
+  h1 { font-size: clamp(40px, 6vw, 64px); font-weight: 800; }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
+</style>

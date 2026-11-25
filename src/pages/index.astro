@@ -1,0 +1,254 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Media from '../components/Media.astro';
+import Icon from '../components/Icon.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import CopyField from '../components/CopyField.astro';
+import site from '../content/settings/site.json';
+import home from '../content/settings/home.json';
+import network from '../content/settings/network.json';
+import { u, isExternal } from '../lib/url';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const featured = projects.find((p) => p.data.featured) ?? projects[0];
+const rest = projects.filter((p) => p !== featured);
+const cards = rest.slice(0, 4);
+const chips = rest.slice(4);
+
+const events = (await getCollection('events')).sort((a, b) => a.data.order - b.data.order);
+const shownEvents = events.slice(0, 5);
+
+const d = site.donations;
+const donateHref = d.paypal || d.satispay || (d.iban ? '#iban' : `mailto:${site.email}?subject=${encodeURIComponent('Vorrei fare una donazione')}`);
+const volunteerHref = site.volunteerLink || `mailto:${site.email}?subject=${encodeURIComponent('Vorrei diventare volontario')}`;
+const newsletterHref = site.newsletterLink || `mailto:${site.email}?subject=${encodeURIComponent('Iscrizione agli aggiornamenti')}&body=${encodeURIComponent('Ciao! Vorrei ricevere le notizie sui prossimi eventi di ConVoglio.')}`;
+const pillarIcons = ['coins', 'users', 'sprout'] as const;
+const pillarTones = ['red', 'yellow', 'green'];
+const featuredHref = featured.data.link ? u(featured.data.link) : u(`/progetti/${featured.id}/`);
+---
+<Base title={home.seoTitle}>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div class="hero__copy">
+        <span class="badge">{home.hero.badge}</span>
+        <h1>{home.hero.title}</h1>
+        <p class="hero__lead">{home.hero.lead}</p>
+        <div class="row">
+          <a class="btn btn--primary" href="#sostienici">Sostienici</a>
+          <a class="btn btn--ghost" href="#progetti">Scopri i progetti</a>
+        </div>
+      </div>
+      <div class="hero__media">
+        <Media src={home.hero.image} alt={home.hero.imageAlt} eager />
+        <a class="hero__chip" href="#sostienici">
+          <span class="hero__chip-ic"><Icon name="heart" size={20} /></span>
+          <span><strong>Dona il tuo 5×1000</strong><br /><small>C.F. {site.fiscalCode}</small></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHI SIAMO -->
+  <section class="section section--soft" id="chi-siamo">
+    <div class="wrap">
+      <p class="kicker">Chi siamo</p>
+      <h2 class="h2">{home.about.title}</h2>
+      <p class="lead">{home.about.lead}</p>
+      <div class="grid grid--3 pillars">
+        {home.about.pillars.map((p, i) => (
+          <article class="card">
+            <span class={`pill-ic pill-ic--${pillarTones[i % 3]}`}><Icon name={pillarIcons[i % 3]} /></span>
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGETTI -->
+  <section class="section" id="progetti">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="kicker">Progetti</p>
+          <h2 class="h2">I nostri progetti</h2>
+        </div>
+        <a class="more" href={u('/progetti/')}>Tutti gli {projects.length} progetti →</a>
+      </div>
+
+      <a class="feat" href={featuredHref}>
+        <div class="feat__copy">
+          <span class="badge badge--yellow">In evidenza</span>
+          <h3>{featured.data.title}</h3>
+          <p>{featured.data.summary}</p>
+          <span class="feat__more">Scopri il progetto →</span>
+        </div>
+        <div class="feat__media"><Media src={featured.data.image} alt={featured.data.imageAlt} tone="dark" /></div>
+      </a>
+
+      <div class="grid grid--4 cards">
+        {cards.map((p) => <ProjectCard id={p.id} data={p.data} />)}
+      </div>
+
+      {chips.length > 0 && (
+        <div class="chips">
+          {chips.map((p) => <a class="chip" href={p.data.link ? u(p.data.link) : u(`/progetti/${p.id}/`)}>{p.data.title}</a>)}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- EVENTI -->
+  <section class="section section--soft" id="eventi">
+    <div class="wrap ev">
+      <div>
+        <p class="kicker">Eventi</p>
+        <h2 class="h2">{home.events.title}</h2>
+        <p class="lead">{home.events.lead}</p>
+        <p class="ev__more"><a class="more" href={u('/eventi/')}>Archivio eventi →</a></p>
+      </div>
+      <ul class="ev__list">
+        {shownEvents.map((e) => (
+          <li><a href={u(`/eventi/${e.id}/`)}><strong>{e.data.title}</strong><span>{e.data.category}</span></a></li>
+        ))}
+        <li><a href={u('/eventi/')}><strong>Tutti gli eventi</strong><span>Archivio →</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SOSTIENICI -->
+  <section class="section" id="sostienici">
+    <div class="wrap">
+      <p class="kicker">Sostienici</p>
+      <h2 class="h2 support__title">{home.support.title}</h2>
+      <div class="grid grid--3">
+        <article class="card support support--red">
+          <h3>{home.support.fiveTitle}</h3>
+          <p>{home.support.fiveText}</p>
+          <div class="support__foot"><CopyField value={site.fiscalCode} label="codice fiscale" variant="onred" /></div>
+        </article>
+        <article class="card card--soft support">
+          <h3>{home.support.donateTitle}</h3>
+          <p>{home.support.donateText}</p>
+          <div class="support__foot row">
+            <a class="btn btn--primary" href={donateHref} target={isExternal(donateHref) ? '_blank' : undefined} rel={isExternal(donateHref) ? 'noopener' : undefined}>Dona ora</a>
+            {d.paypal && d.satispay && <a class="btn btn--ghost" href={d.satispay} target="_blank" rel="noopener">Satispay</a>}
+            {d.iban && <a class="btn btn--ghost" href="#iban">IBAN</a>}
+          </div>
+          {d.iban && (
+            <div class="iban" id="iban">
+              <p class="iban__label">Bonifico intestato a {d.ibanHolder}</p>
+              <CopyField value={d.iban} label="IBAN" />
+            </div>
+          )}
+        </article>
+        <article class="card card--soft support">
+          <h3>{home.support.volunteerTitle}</h3>
+          <p>{home.support.volunteerText}</p>
+          <div class="support__foot">
+            <a class="btn btn--ghost" href={volunteerHref} target={isExternal(volunteerHref) ? '_blank' : undefined} rel={isExternal(volunteerHref) ? 'noopener' : undefined}>Scrivici</a>
+          </div>
+        </article>
+      </div>
+
+      <h3 class="net__title">{network.title}</h3>
+      <div class="grid grid--4 nets">
+        {network.partners.map((p) => (
+          <a class="net" href={p.url} target="_blank" rel="noopener">
+            {p.logo ? <img src={u(p.logo)} alt={p.name} loading="lazy" /> : <span>{p.name}</span>}
+          </a>
+        ))}
+      </div>
+
+      <div class="news">
+        <div>
+          <h2>{home.newsletter.title}</h2>
+          <p>{home.newsletter.text}</p>
+        </div>
+        <div class="row">
+          <a class="btn btn--yellow" href={newsletterHref} target={isExternal(newsletterHref) ? '_blank' : undefined} rel={isExternal(newsletterHref) ? 'noopener' : undefined}>Iscriviti</a>
+          {site.instagram && <a class="btn btn--line" href={site.instagram} target="_blank" rel="noopener">Seguici su Instagram</a>}
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .badge { align-self: flex-start; background: var(--tint-yellow); color: #6b4a00; font-weight: 600; font-size: 14px; padding: 8px 14px; border-radius: 999px; }
+  .badge--yellow { background: var(--yellow); color: var(--ink); font-size: 13px; padding: 6px 12px; }
+
+  .hero { padding: 88px 0 96px; }
+  .hero__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 56px; align-items: center; }
+  .hero__copy { display: flex; flex-direction: column; gap: 28px; }
+  .hero h1 { font-size: clamp(44px, 6.2vw, 72px); font-weight: 800; line-height: 1.02; }
+  .hero__lead { font-size: 20px; color: var(--muted); max-width: 560px; }
+  .hero__media { position: relative; height: 480px; border-radius: 28px; overflow: hidden; }
+  .hero__chip { position: absolute; left: 20px; bottom: 20px; display: flex; gap: 14px; align-items: center; background: #fff; color: var(--ink); text-decoration: none; padding: 14px 20px 14px 14px; border-radius: 18px; box-shadow: 0 12px 32px rgba(27, 31, 42, 0.14); line-height: 1.3; }
+  .hero__chip:hover { color: var(--ink); }
+  .hero__chip small { color: var(--muted); font-size: 13px; }
+  .hero__chip-ic { width: 44px; height: 44px; border-radius: 12px; background: var(--red); color: #fff; display: grid; place-items: center; flex-shrink: 0; }
+
+  .pillars { margin-top: 48px; }
+  .pill-ic { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 20px; }
+  .pill-ic--red { background: var(--tint-red); color: var(--red); }
+  .pill-ic--yellow { background: var(--tint-yellow); color: #8a5d00; }
+  .pill-ic--green { background: var(--tint-green); color: var(--teal); }
+
+  .feat { display: grid; grid-template-columns: 1fr 1fr; border-radius: 28px; overflow: hidden; background: var(--night); color: #fff; text-decoration: none; }
+  .feat:hover { color: #fff; }
+  .feat__copy { padding: 56px 48px; display: flex; flex-direction: column; gap: 18px; }
+  .feat h3 { font-size: clamp(32px, 3.6vw, 44px); font-weight: 800; }
+  .feat p { color: #d5d9e0; font-size: 18px; max-width: 460px; }
+  .feat__more { color: var(--yellow); font-weight: 600; }
+  .feat:hover .feat__more { text-decoration: underline; }
+  .feat__media { min-height: 320px; }
+  .cards { margin: 24px 0; }
+
+  .ev { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 48px; align-items: start; }
+  .ev__more { margin-top: 24px; }
+  .ev__list { list-style: none; margin: 0; padding: 0; background: #fff; border-radius: var(--radius); overflow: hidden; }
+  .ev__list li + li { border-top: 1px solid var(--line); }
+  .ev__list a { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 24px; color: var(--ink); text-decoration: none; }
+  .ev__list a:hover { background: var(--soft); }
+  .ev__list strong { font-weight: 600; font-size: 17px; }
+  .ev__list span { color: var(--muted); font-size: 14px; white-space: nowrap; }
+
+  .support__title { margin-bottom: 40px; }
+  .support { display: flex; flex-direction: column; gap: 4px; }
+  .support--red { background: var(--red); color: #fff; }
+  .support--red p { color: #fde7e0; }
+  .support__foot { margin-top: auto; padding-top: 24px; }
+  .iban { margin-top: 20px; scroll-margin-top: 120px; }
+  .iban__label { font-size: 14px; margin-bottom: 8px; }
+
+  .net__title { font-family: var(--font-body); font-size: 18px; font-weight: 600; color: var(--muted); margin: 64px 0 20px; }
+  .net { min-height: 92px; border: 1px solid var(--line); border-radius: 18px; display: flex; align-items: center; padding: 16px 20px; color: var(--ink); text-decoration: none; font-weight: 600; }
+  .net:hover { border-color: var(--ink); color: var(--ink); }
+  .net img { max-height: 56px; width: auto; object-fit: contain; }
+
+  .news { margin-top: 64px; background: var(--teal); color: #fff; border-radius: 28px; padding: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 24px; align-items: center; }
+  .news h2 { font-size: 34px; font-weight: 800; margin-bottom: 8px; }
+  .news p { color: #d6ece9; }
+  .news .row { justify-content: flex-end; }
+
+  @media (max-width: 860px) {
+    .feat { grid-template-columns: 1fr; }
+    .feat__media { min-height: 220px; order: -1; }
+    .news .row { justify-content: flex-start; }
+  }
+  @media (max-width: 600px) {
+    .hero { padding: 48px 0 64px; }
+    .hero__media { height: 300px; }
+    .hero__lead { font-size: 18px; }
+    .feat__copy { padding: 32px 24px; }
+    .news { padding: 32px 24px; }
+    .ev__list a { flex-direction: column; align-items: flex-start; gap: 2px; }
+    .nets { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .net { min-height: 76px; padding: 12px 14px; font-size: 14px; }
+  }
+</style>
