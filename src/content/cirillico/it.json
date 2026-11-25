@@ -51,6 +51,8 @@
   "whoKicker": "Chi gioca con noi",
   "whoTitle": "Lingue diverse, un solo pallone.",
   "whoLead": "Ragazze e ragazzi dai Paesi dell'ex Unione Sovietica che vivono a Torino. La squadra è aperta a chiunque condivida le nostre linee guida etiche.",
+  "whoImage": "/uploads/cirillico/squadra.webp",
+  "whoImageAlt": "Ragazze di USPR Cirillico festeggiano con la coppa",
   "groups": [
     {
       "code": "KZ",

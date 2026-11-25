@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
 import CopyField from '../components/CopyField.astro';
 import Icon from '../components/Icon.astro';
 import site from '../content/settings/site.json';
@@ -7,11 +8,11 @@ import { u } from '../lib/url';
 const d = site.donations;
 ---
 <Base title="Sostienici · ConVoglio OdV" description={`Dona il 5×1000 a ConVoglio (C.F. ${site.fiscalCode}) o fai una donazione con bonifico, Satispay o PayPal. Ogni euro diventa un evento solidale a Torino.`}>
-  <header class="wrap page-head">
-    <p class="kicker">Sostienici</p>
-    <h1 class="h1">Ogni contributo diventa un evento solidale.</h1>
-    <p class="lead">Puoi aiutarci senza spendere nulla con il 5×1000, con una donazione o diventando socio. Scegli il modo che preferisci.</p>
-  </header>
+  <PageHead tone="red" kicker="Sostienici" title="Ogni contributo diventa un evento solidale." lead="Puoi aiutarci senza spendere nulla con il 5×1000, con una donazione o diventando socio. Scegli il modo che preferisci." crumbs={[{ label: 'Sostienici' }]}>
+    <nav class="jump" aria-label="In questa pagina">
+      <a href="#cinque-per-mille">5×1000</a><a href="#dona">Donazione</a><a href="#socio">Diventa socio</a>
+    </nav>
+  </PageHead>
 
   <section class="wrap blocks">
     <article class="block block--red" id="cinque-per-mille">
@@ -60,7 +61,7 @@ const d = site.donations;
     </div>
   </section>
 
-  <section class="section section--soft">
+  <section class="section section--soft" id="socio">
     <div class="wrap grid grid--2">
       <article class="card">
         <h2 class="h3">Diventa socio</h2>
@@ -80,9 +81,12 @@ const d = site.donations;
 </Base>
 
 <style>
-  .blocks { padding-bottom: 96px; display: flex; flex-direction: column; gap: 64px; }
+  .jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+  .jump a { min-height: 44px; display: inline-flex; align-items: center; padding: 0 18px; border-radius: 999px; background: #fff; color: var(--ink); text-decoration: none; font-weight: 600; font-size: 15px; box-shadow: 0 2px 8px rgba(27,31,42,.06); }
+  .jump a:hover { background: var(--ink); color: #fff; }
+  .blocks { padding-top: 56px; padding-bottom: 96px; display: flex; flex-direction: column; gap: 64px; }
   .block { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 24px; border-radius: var(--radius-lg); padding: 40px; scroll-margin-top: 110px; }
-  .block--red { background: var(--red); color: #fff; }
+  .block--red { background: var(--red); color: #fff; position: relative; overflow: hidden; }
   .block__ic { width: 56px; height: 56px; border-radius: 16px; background: rgba(255, 255, 255, 0.18); display: grid; place-items: center; }
   .block h2 { font-size: clamp(28px, 3.4vw, 36px); font-weight: 800; margin-bottom: 12px; }
   .block p { max-width: 640px; }

@@ -1,5 +1,6 @@
 ---
 import Media from './Media.astro';
+import Sticker from './Sticker.astro';
 import { u, isExternal } from '../lib/url';
 
 interface Props {
@@ -11,36 +12,43 @@ const { id, data, headingLevel = 'h3' } = Astro.props;
 const href = data.link ? u(data.link) : u(`/progetti/${id}/`);
 const ext = isExternal(data.link);
 const H = headingLevel;
+const toneMap: Record<string, string> = { blue: 'blue', yellow: 'yellow', red: 'red', green: 'green', dark: 'soft' };
+const tone = toneMap[data.color] ?? 'blue';
+const stickerColor: Record<string, string> = { blue: 'var(--sky)', yellow: 'var(--yellow)', red: 'var(--pink)', green: 'var(--leaf)', soft: 'var(--sky)' };
 ---
-<a class:list={['pcard', !data.image && `pcard--plain pcard--${data.color}`]} href={href} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined}>
-  {data.image && (
+<a class:list={['pcard', !data.image && 'pcard--plain', `tone-${tone}`]} href={href} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined}>
+  {data.image ? (
     <div class="pcard__img"><Media src={data.image} alt={data.imageAlt} tone={data.color} fit={data.imageFit} /></div>
+  ) : (
+    <Sticker shape="heart" color={stickerColor[tone]} size={44} rotate={-10} class="pcard__sticker" />
   )}
   <div class="pcard__body">
     <H class="pcard__title">{data.title}</H>
     {data.summary && <p>{data.summary}</p>}
-    <span class="pcard__more">{ext ? 'Apri il sito (nuova scheda)' : 'Scopri il progetto'}</span>
+    <span class="pcard__more">
+      {ext ? 'Apri il sito' : 'Scopri il progetto'}
+      {ext ? (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" /></svg>
+      ) : (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+      )}
+      {ext && <span class="sr-only">(si apre in una nuova scheda)</span>}
+    </span>
   </div>
 </a>
 
 <style>
-  .pcard { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; text-decoration: none; color: var(--ink); background: #fff; transition: border-color .15s; min-height: 100%; }
-  .pcard:hover { color: var(--ink); border-color: #b9bfca; }
+  .pcard { position: relative; display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; text-decoration: none; color: var(--ink); background: #fff; height: 100%; transition: transform .18s ease, box-shadow .18s ease; }
+  .pcard:hover { color: var(--ink); transform: translateY(-3px); box-shadow: 0 14px 30px rgba(27, 31, 42, 0.1); }
   .pcard__img { aspect-ratio: 16 / 10; }
   .pcard__body { padding: 22px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-  .pcard__title { font-family: var(--font-head); font-size: 21px; font-weight: 600; letter-spacing: -0.01em; }
+  .pcard__title { font-family: var(--font-head); font-size: 21px; font-weight: 700; letter-spacing: -0.01em; }
   .pcard p { font-size: 15px; color: var(--muted); }
-  .pcard__more { margin-top: auto; padding-top: 10px; font-size: 14px; font-weight: 600; color: var(--teal); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
-  .pcard--plain { border-color: transparent; min-height: 168px; }
-  .pcard--plain .pcard__body { padding: 26px 24px 22px; }
+  .pcard__more { margin-top: auto; padding-top: 12px; display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600; color: var(--tone-ink); }
+  .pcard--plain { background: var(--tone-tint); border-color: transparent; min-height: 190px; overflow: visible; }
+  .pcard--plain .pcard__body { padding: 64px 24px 22px; }
   .pcard--plain .pcard__title { font-size: 24px; font-weight: 800; }
-  .pcard--blue { background: var(--tint-sky); }
-  .pcard--yellow { background: var(--tint-yellow); }
-  .pcard--red { background: var(--tint-red); }
-  .pcard--green { background: var(--tint-mint); }
-  .pcard--dark { background: var(--night); color: #fff; }
-  .pcard--dark p { color: #cfd3db; }
-  .pcard--dark .pcard__more { color: var(--yellow); }
-  .pcard--plain:hover { border-color: rgba(27, 31, 42, 0.35); }
-  .pcard--dark:hover { color: #fff; }
+  .pcard--plain p { color: #3d4350; }
+  .pcard :global(.pcard__sticker) { top: 16px; left: 18px; }
+  @media (prefers-reduced-motion: reduce) { .pcard { transition: none; } .pcard:hover { transform: none; } }
 </style>

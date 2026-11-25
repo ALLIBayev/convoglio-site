@@ -2,64 +2,67 @@
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Media from '../../components/Media.astro';
+import PageHead from '../../components/PageHead.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
 import site from '../../content/settings/site.json';
 import { u } from '../../lib/url';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
-  // Projects with an internal page of their own (e.g. Cirillico) or an external site
-  // don't need a generic page.
-  return projects.filter((p) => !p.data.link).map((p) => ({ params: { id: p.id }, props: { p } }));
+  // Projects with a page of their own (Cirillico) or an external site don't get a generic page.
+  return projects.filter((p) => !p.data.link).map((p) => ({ params: { id: p.id }, props: { p, all: projects } }));
 }
-const { p } = Astro.props;
+const { p, all } = Astro.props;
 const { Content } = await render(p);
 const hasBody = !!p.body?.trim();
-const description = p.data.summary || `${p.data.title}: un progetto di ConVoglio OdV, associazione di volontariato a Torino.`;
+const description = p.data.summary || `${p.data.title}: un progetto di ConVoglio OdV, organizzazione di volontariato a Torino.`;
+const others = all.filter((x) => x.id !== p.id && !x.data.image).sort((a, b) => a.data.order - b.data.order).slice(0, 3);
 ---
 <Base title={`${p.data.title} · ConVoglio OdV`} description={description} image={p.data.image || undefined}>
-  <section class="section top">
-    <div class="wrap">
-      <a class="back" href={u('/progetti/')}>Tutti i progetti</a>
-      <div class:list={["head", !p.data.image && "head--solo"]}>
-        <div>
-          <p class="kicker">Progetto</p>
-          <h1>{p.data.title}</h1>
-          {p.data.summary && <p class="lead">{p.data.summary}</p>}
-        </div>
-        {p.data.image && <div class="media"><Media src={p.data.image} alt={p.data.imageAlt} tone={p.data.color} fit={p.data.imageFit} eager /></div>}
+  <PageHead tone="blue" kicker="Progetto" title={p.data.title} lead={p.data.summary || undefined} crumbs={[{ label: 'Progetti', href: '/progetti/' }, { label: p.data.title }]} />
+
+  <section class="wrap detail">
+    <div class:list={['detail__grid', !p.data.image && 'detail__grid--solo']}>
+      <div>
+        {hasBody ? (
+          <div class="prose"><Content /></div>
+        ) : (
+          <div class="empty">
+            <h2>Vuoi saperne di più su {p.data.title}?</h2>
+            <p>Scrivici: ti raccontiamo come funziona il progetto e come puoi dare una mano.</p>
+            <div class="row">
+              <a class="btn btn--primary" href={`https://wa.me/${site.whatsapp}?text=${encodeURIComponent('Ciao! Vorrei sapere di più sul progetto ' + p.data.title)}`} target="_blank" rel="noopener">Scrivici su WhatsApp</a>
+              <a class="btn btn--ghost" href={`mailto:${site.email}?subject=${encodeURIComponent(p.data.title)}`}>Email</a>
+            </div>
+          </div>
+        )}
       </div>
+      {p.data.image && <div class="detail__media"><Media src={p.data.image} alt={p.data.imageAlt} tone={p.data.color} fit={p.data.imageFit} eager /></div>}
     </div>
   </section>
 
-  <section class="section body">
+  <section class="section section--soft">
     <div class="wrap">
-      {hasBody ? (
-        <div class="prose"><Content /></div>
-      ) : (
-        <div class="empty">
-          <h2>Vuoi saperne di più su {p.data.title}?</h2>
-          <p>Scrivici: ti raccontiamo come funziona il progetto e come puoi dare una mano.</p>
-          <div class="row">
-            <a class="btn btn--primary" href={`mailto:${site.email}?subject=${encodeURIComponent(p.data.title)}`}>Scrivici</a>
-            <a class="btn btn--ghost" href={u('/sostienici/')}>Sostienici</a>
-          </div>
-        </div>
-      )}
+      <div class="section-head">
+        <h2 class="h2">Altri progetti</h2>
+        <a class="btn btn--ghost" href={u('/progetti/')}>Tutti i progetti</a>
+      </div>
+      <div class="grid grid--3">
+        {others.map((o) => <ProjectCard id={o.id} data={o.data} />)}
+      </div>
     </div>
   </section>
 </Base>
 
 <style>
-  .top { padding-bottom: 48px; }
-  .back { display: inline-flex; align-items: center; min-height: 44px; margin-bottom: 20px; font-weight: 600; }
-  .head { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 48px; align-items: center; }
-  .head--solo { grid-template-columns: minmax(0, 1fr); max-width: 820px; }
-  h1 { font-size: clamp(40px, 5.4vw, 60px); font-weight: 800; }
-  .media { aspect-ratio: 4 / 3; border-radius: 28px; overflow: hidden; }
-  .body { padding-top: 0; }
-  .empty { background: var(--soft); border-radius: 28px; padding: 48px; display: flex; flex-direction: column; gap: 16px; max-width: 820px; }
+  .detail { padding-top: 56px; padding-bottom: 80px; }
+  .detail__grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+  .detail__grid--solo { grid-template-columns: minmax(0, 1fr); max-width: 820px; }
+  .detail__media { aspect-ratio: 4 / 3; border-radius: var(--radius-lg); overflow: hidden; }
+  .empty { background: var(--tint-sky); border-radius: var(--radius-lg); padding: 40px; display: flex; flex-direction: column; gap: 14px; }
   .empty h2 { font-size: 28px; font-weight: 800; }
-  .empty p { color: var(--muted); }
-  .row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
-  @media (max-width: 600px) { .empty { padding: 28px 22px; } }
+  .empty p { color: #3d4350; }
+  .row { margin-top: 6px; }
+  @media (max-width: 800px) { .detail__grid { grid-template-columns: minmax(0, 1fr); } .detail__media { order: -1; } }
+  @media (max-width: 600px) { .detail { padding-top: 32px; padding-bottom: 56px; } .empty { padding: 28px 22px; } }
 </style>

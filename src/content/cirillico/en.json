@@ -51,6 +51,8 @@
   "whoKicker": "Who plays with us",
   "whoTitle": "Different languages, one ball.",
   "whoLead": "Young women and men from the former Soviet Union countries who live in Turin. The team is open to anyone who shares our ethical guidelines.",
+  "whoImage": "/uploads/cirillico/squadra.webp",
+  "whoImageAlt": "USPR Cirillico players celebrating with the cup",
   "groups": [
     {
       "code": "KZ",

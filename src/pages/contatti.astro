@@ -1,14 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
 import site from '../content/settings/site.json';
 import { telHref } from '../lib/url';
 ---
 <Base title="Contatti · ConVoglio OdV" description={`Contatta ConVoglio OdV: ${site.phone}, ${site.email}. Sede in ${site.address}.`}>
-  <header class="wrap page-head">
-    <p class="kicker">Contatti</p>
-    <h1 class="h1">Scrivici, chiamaci o passa a trovarci.</h1>
-    <p class="lead">Per eventi, collaborazioni, donazioni o per entrare in squadra come volontario.</p>
-  </header>
+  <PageHead tone="green" kicker="Contatti" title="Scrivici, chiamaci o passa a trovarci." lead="Per eventi, collaborazioni, donazioni o per entrare in squadra come volontario." crumbs={[{ label: 'Contatti' }]} />
 
   <section class="wrap contacts">
     <a class="ct ct--red" href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener">
@@ -39,7 +36,7 @@ import { telHref } from '../lib/url';
 </Base>
 
 <style>
-  .contacts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .contacts { padding-top: 48px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
   .ct { display: flex; flex-direction: column; gap: 8px; border-radius: var(--radius); padding: 28px; color: var(--ink); text-decoration: none; min-height: 190px; border: 1px solid transparent; }
   a.ct:hover { color: var(--ink); border-color: rgba(27, 31, 42, 0.35); }
   .ct--red { background: var(--tint-red); }

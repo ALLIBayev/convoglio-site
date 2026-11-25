@@ -1,0 +1,61 @@
+---
+import Sticker from './Sticker.astro';
+import { u } from '../lib/url';
+
+interface Crumb { label: string; href?: string }
+interface Props {
+  kicker?: string;
+  title: string;
+  lead?: string;
+  tone?: 'yellow' | 'blue' | 'red' | 'green' | 'soft';
+  crumbs?: Crumb[];
+}
+const { kicker, title, lead, tone = 'soft', crumbs = [] } = Astro.props;
+const trail: Crumb[] = [{ label: 'Home', href: '/' }, ...crumbs];
+---
+<header class:list={['ph', `tone-${tone}`]}>
+  <div class="wrap ph__in">
+    <nav class="crumbs" aria-label="Sei qui">
+      <ol>
+        {trail.map((c, i) => (
+          <li>
+            {c.href && i < trail.length - 1 ? <a href={u(c.href)}>{c.label}</a> : <span aria-current="page">{c.label}</span>}
+          </li>
+        ))}
+      </ol>
+    </nav>
+    {kicker && <p class="ph__kicker">{kicker}</p>}
+    <h1 class="ph__title">{title}</h1>
+    {lead && <p class="ph__lead">{lead}</p>}
+    <slot />
+  </div>
+  <Sticker shape="heart" color="var(--tone)" size={64} rotate={-12} class="ph__s1" />
+  <Sticker shape="star" color="var(--yellow)" size={40} rotate={14} class="ph__s2" />
+  <Sticker shape="dot" color="var(--sky)" size={22} class="ph__s3" />
+</header>
+
+<style>
+  .ph { position: relative; overflow: hidden; background: var(--tone-tint); border-bottom: 1px solid rgba(27, 31, 42, 0.06); }
+  .ph__in { position: relative; z-index: 1; padding-top: 28px; padding-bottom: 56px; }
+  .crumbs ol { list-style: none; margin: 0 0 36px; padding: 0; display: flex; flex-wrap: wrap; gap: 4px; font-size: 14px; color: var(--muted); }
+  .crumbs li { display: flex; align-items: center; gap: 4px; }
+  .crumbs li + li::before { content: ''; width: 6px; height: 6px; border-top: 1.6px solid currentColor; border-right: 1.6px solid currentColor; transform: rotate(45deg); margin: 0 8px 0 2px; opacity: .6; }
+  .crumbs a { color: var(--muted); text-decoration: none; padding: 6px 0; }
+  .crumbs a:hover { color: var(--ink); text-decoration: underline; }
+  .crumbs [aria-current] { color: var(--ink); font-weight: 600; }
+  .ph__kicker { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 15px; color: var(--tone-ink); margin-bottom: 12px; }
+  .ph__kicker::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--tone); }
+  .ph__title { font-size: clamp(38px, 5.4vw, 64px); font-weight: 800; max-width: 900px; }
+  .ph__lead { font-size: 19px; color: #3d4350; max-width: 640px; margin-top: 18px; }
+  .ph :global(.ph__s1) { right: 6%; top: 34px; }
+  .ph :global(.ph__s2) { right: 14%; bottom: 26px; }
+  .ph :global(.ph__s3) { right: 3%; bottom: 60px; }
+  @media (max-width: 700px) {
+    .ph__in { padding-top: 18px; padding-bottom: 40px; }
+    .crumbs ol { margin-bottom: 24px; }
+    .ph__lead { font-size: 17px; }
+    .ph :global(.ph__s1) { width: 40px; height: 40px; top: 16px; right: 16px; }
+    .ph :global(.ph__s2), .ph :global(.ph__s3) { display: none; }
+    .ph__title { padding-right: 36px; }
+  }
+</style>

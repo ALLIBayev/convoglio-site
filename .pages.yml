@@ -215,6 +215,8 @@ content:
       - { name: whoKicker, label: "Chi gioca · etichetta", type: string }
       - { name: whoTitle, label: "Chi gioca · titolo", type: string }
       - { name: whoLead, label: "Chi gioca · testo", type: text }
+      - { name: whoImage, label: "Chi gioca · foto", type: image }
+      - { name: whoImageAlt, label: "Chi gioca · descrizione foto", type: string }
       - name: groups
         label: Gruppi
         type: object

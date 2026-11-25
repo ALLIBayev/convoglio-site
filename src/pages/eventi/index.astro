@@ -2,26 +2,31 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import EventCard from '../../components/EventCard.astro';
+import PageHead from '../../components/PageHead.astro';
 import home from '../../content/settings/home.json';
 
 const events = (await getCollection('events')).sort((a, b) => a.data.order - b.data.order);
-const tones = ['yellow', 'blue', 'red', 'green'];
+const tones = ['yellow', 'blue', 'green', 'red'];
+const photos = events.filter((e) => e.data.image);
+const tickets = events.filter((e) => !e.data.image);
 ---
 <Base title="Eventi · ConVoglio OdV" description="Spettacoli, concerti, corse e feste per bambini: gli eventi solidali di ConVoglio OdV a Torino.">
-  <header class="wrap page-head">
-    <p class="kicker">Eventi</p>
-    <h1 class="h1">{home.events.title}</h1>
-    <p class="lead">{home.events.lead}</p>
-  </header>
+  <PageHead tone="red" kicker="Eventi" title={home.events.title} lead={home.events.lead} crumbs={[{ label: 'Eventi' }]} />
   <section class="wrap list-wrap">
+    {photos.length > 0 && (
+      <div class="photos">
+        {photos.map((e) => <EventCard id={e.id} data={e.data} wide />)}
+      </div>
+    )}
     <div class="grid grid--3 list">
-      {events.map((e, i) => <EventCard id={e.id} data={e.data} tone={tones[i % 4]} />)}
+      {tickets.map((e, i) => <EventCard id={e.id} data={e.data} tone={tones[i % 4]} />)}
     </div>
   </section>
 </Base>
 
 <style>
-  .list-wrap { padding-bottom: 96px; }
-  .list { gap: 16px; align-items: start; }
+  .list-wrap { padding-top: 48px; padding-bottom: 96px; --ticket-bg: #fff; }
+  .photos { margin-bottom: 28px; display: grid; gap: 16px; }
+  .list { gap: 20px 16px; }
   @media (max-width: 600px) { .list-wrap { padding-bottom: 64px; } }
 </style>

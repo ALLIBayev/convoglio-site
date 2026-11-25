@@ -4,6 +4,8 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import site from '../content/settings/site.json';
 import { u } from '../lib/url';
+import fontHead from '@fontsource/bricolage-grotesque/files/bricolage-grotesque-latin-800-normal.woff2?url';
+import fontBody from '@fontsource/inter/files/inter-latin-400-normal.woff2?url';
 
 interface Alt { lang: string; href: string }
 interface Props {
@@ -15,6 +17,7 @@ interface Props {
   chrome?: boolean;
   jsonld?: Record<string, unknown>;
   noindex?: boolean;
+  preloadImage?: string;
 }
 const {
   title,
@@ -25,6 +28,7 @@ const {
   chrome = true,
   jsonld,
   noindex = false,
+  preloadImage,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
@@ -52,6 +56,9 @@ const org = {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
+    <link rel="preload" href={fontHead} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={fontBody} as="font" type="font/woff2" crossorigin />
+    {preloadImage && <link rel="preload" href={u(preloadImage)} as="image" fetchpriority="high" />}
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}

@@ -1,0 +1,37 @@
+---
+import Media from './Media.astro';
+import { u } from '../lib/url';
+
+interface Props {
+  id: string;
+  data: { title: string; summary: string; image: string; imageAlt: string; imageFit: 'cover' | 'contain'; link: string };
+  headingLevel?: 'h2' | 'h3';
+}
+const { id, data, headingLevel = 'h3' } = Astro.props;
+const href = data.link ? u(data.link) : u(`/progetti/${id}/`);
+const H = headingLevel;
+---
+<a class="feat" href={href}>
+  <div class="feat__copy">
+    <span class="feat__badge">In evidenza</span>
+    <H class="feat__title">{data.title}</H>
+    <p>{data.summary}</p>
+    <span class="feat__more">Scopri il progetto
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+    </span>
+  </div>
+  <div class="feat__media"><Media src={data.image} alt={data.imageAlt} fit={data.imageFit} tone="dark" width={1200} height={900} /></div>
+</a>
+
+<style>
+  .feat { display: grid; grid-template-columns: 1fr 1fr; border-radius: var(--radius-lg); overflow: hidden; background: var(--night); color: #fff; text-decoration: none; transition: box-shadow .2s; }
+  .feat:hover { color: #fff; box-shadow: 0 18px 40px rgba(27, 31, 42, 0.25); }
+  .feat__copy { padding: 56px 48px; display: flex; flex-direction: column; gap: 18px; justify-content: center; }
+  .feat__badge { align-self: flex-start; background: var(--yellow); color: var(--ink); font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; }
+  .feat__title { font-size: clamp(32px, 3.6vw, 46px); font-weight: 800; }
+  .feat p { color: #d5d9e0; font-size: 18px; max-width: 460px; }
+  .feat__more { display: inline-flex; align-items: center; gap: 8px; color: var(--yellow); font-weight: 600; }
+  .feat__media { min-height: 340px; }
+  @media (max-width: 900px) { .feat { grid-template-columns: 1fr; } .feat__media { min-height: 0; aspect-ratio: 4 / 3; order: -1; } }
+  @media (max-width: 600px) { .feat__copy { padding: 28px 22px 32px; } .feat p { font-size: 16px; } }
+</style>

@@ -28,7 +28,7 @@
   },
   "events": {
     "title": "Ogni evento è un vagone in più.",
-    "lead": "Spettacoli, corse, tornei e feste per bambini: ogni evento raccoglie fondi per chi ne ha bisogno."
+    "lead": "Spettacoli, concerti, corse e feste per bambini: ogni evento raccoglie fondi per chi ne ha bisogno."
   },
   "support": {
     "title": "Tre modi per salire a bordo",
@@ -42,5 +42,23 @@
   "newsletter": {
     "title": "Resta a bordo",
     "text": "Annunciamo eventi e iniziative su Instagram e Facebook. Seguici per non perdere il prossimo."
+  },
+  "how": {
+    "title": "Come funziona il nostro autobus",
+    "lead": "Tre fermate, sempre le stesse: così ogni passione diventa una risorsa per chi aiuta.",
+    "steps": [
+      {
+        "title": "Organizziamo un evento",
+        "text": "Spettacoli, concerti, corse, tornei e feste per bambini, con volontari, artisti e sportivi."
+      },
+      {
+        "title": "Raccogliamo i fondi",
+        "text": "Biglietti, offerte e donazioni: ogni partecipante sale a bordo e dà una mano."
+      },
+      {
+        "title": "Li doniamo a chi aiuta",
+        "text": "Mettiamo i fondi a disposizione di associazioni che fanno beneficenza diretta ma non hanno risorse per i loro progetti."
+      }
+    ]
   }
 }

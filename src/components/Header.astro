@@ -1,19 +1,16 @@
 ---
 import { u } from '../lib/url';
+import { sections, navOrder } from '../lib/sections';
 
-const links = [
-  { href: '/organizzazione/', label: 'Chi siamo' },
-  { href: '/progetti/', label: 'Progetti' },
-  { href: '/eventi/', label: 'Eventi' },
-  { href: '/contatti/', label: 'Contatti' },
-];
+const links = navOrder.map((k) => sections[k]);
 const path = Astro.url.pathname;
 const isCurrent = (href: string) => path.startsWith(u(href));
+const onSupport = isCurrent(sections.sostienici.href) || isCurrent('/iscrizioni/');
 ---
 <header class="hdr">
   <div class="wrap hdr__in">
     <a class="brand" href={u('/')} aria-label="ConVoglio OdV, vai alla home">
-      <img class="brand__bus" src={u('/brand/bus.webp')} alt="" width="62" height="51" />
+      <img class="brand__bus" src={u('/brand/bus.webp')} alt="" width="62" height="51" fetchpriority="high" />
       <span class="brand__txt" aria-hidden="true">
         <span class="brand__name">ConVoglio</span>
         <span class="brand__sub">OdV, Torino</span>
@@ -22,22 +19,27 @@ const isCurrent = (href: string) => path.startsWith(u(href));
 
     <nav class="nav" aria-label="Menu principale">
       {links.map((l) => (
-        <a href={u(l.href)} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a>
+        <a class={`tone-${l.tone}`} href={u(l.href)} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a>
       ))}
     </nav>
 
-    <a class="btn btn--primary hdr__cta" href={u('/sostienici/')}>Sostienici</a>
-
-    <details class="mnav">
-      <summary aria-label="Apri il menu">
-        <svg class="ic-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
-        <svg class="ic-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
-      </summary>
-      <nav class="mnav__panel" aria-label="Menu">
-        {links.map((l) => <a href={u(l.href)} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a>)}
-        <a class="mnav__cta" href={u('/sostienici/')}>Sostienici</a>
-      </nav>
-    </details>
+    <div class="hdr__actions">
+      <a class="btn btn--primary hdr__cta" href={u('/sostienici/')} aria-current={onSupport ? 'page' : undefined}>
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z" fill="currentColor" /></svg>
+        Dona
+      </a>
+      <details class="mnav">
+        <summary aria-label="Apri il menu">
+          <svg class="ic-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" /></svg>
+          <svg class="ic-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+        </summary>
+        <nav class="mnav__panel" aria-label="Menu">
+          <a class="tone-soft" href={u('/')} aria-current={path === u('/') ? 'page' : undefined}>Home</a>
+          {links.map((l) => <a class={`tone-${l.tone}`} href={u(l.href)} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a>)}
+          <a class="tone-red" href={u('/iscrizioni/')} aria-current={isCurrent('/iscrizioni/') ? 'page' : undefined}>Diventa socio</a>
+        </nav>
+      </details>
+    </div>
   </div>
 </header>
 
@@ -55,33 +57,42 @@ const isCurrent = (href: string) => path.startsWith(u(href));
 </script>
 
 <style>
-  .hdr { border-bottom: 1px solid var(--line); background: rgba(255, 255, 255, 0.96); position: sticky; top: 0; z-index: 40; backdrop-filter: saturate(1.4) blur(8px); }
-  .hdr__in { display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 80px; }
+  .hdr { border-bottom: 1px solid var(--line); background: rgba(255, 255, 255, 0.94); position: sticky; top: 0; z-index: 40; backdrop-filter: saturate(1.4) blur(10px); -webkit-backdrop-filter: saturate(1.4) blur(10px); }
+  .hdr__in { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 76px; }
   .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); min-height: 48px; }
   .brand:hover { color: var(--ink); }
-  .brand__bus { width: 62px; height: auto; flex-shrink: 0; }
+  .brand__bus { width: 62px; height: auto; flex-shrink: 0; transition: transform .25s ease; }
+  .brand:hover .brand__bus { transform: translateX(3px) rotate(-2deg); }
   .brand__txt { display: flex; flex-direction: column; line-height: 1; }
   .brand__name { font-family: var(--font-head); font-weight: 800; font-size: 24px; }
   .brand__sub { font-size: 13px; font-weight: 500; color: var(--muted); margin-top: 5px; }
-  .nav { display: flex; gap: 8px; }
-  .nav a { color: var(--ink); text-decoration: none; font-weight: 500; padding: 10px 14px; border-radius: 999px; }
+
+  .nav { display: flex; gap: 4px; }
+  .nav a, .mnav__panel a { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); text-decoration: none; font-weight: 500; padding: 10px 14px; border-radius: 999px; }
+  .nav a::before, .mnav__panel a::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--tone); flex-shrink: 0; }
   .nav a:hover { background: var(--soft); color: var(--ink); }
-  .nav a[aria-current='page'] { color: var(--red-dark); background: var(--tint-red); }
+  .nav a[aria-current='page'] { background: var(--tone-tint); color: var(--ink); font-weight: 600; }
+
+  .hdr__actions { display: flex; align-items: center; gap: 10px; }
+  .hdr__cta { min-height: 46px; padding: 0 20px; }
+  .hdr__cta[aria-current='page'] { box-shadow: 0 0 0 3px var(--tint-red); }
+
   .mnav { display: none; position: relative; }
   .mnav summary { list-style: none; cursor: pointer; width: 48px; height: 48px; display: grid; place-items: center; border-radius: 14px; background: var(--soft); color: var(--ink); }
   .mnav summary::-webkit-details-marker { display: none; }
   .mnav .ic-close, .mnav[open] .ic-open { display: none; }
   .mnav[open] .ic-close { display: block; }
-  .mnav__panel { position: absolute; right: 0; top: 58px; z-index: 50; width: min(280px, calc(100vw - 40px)); background: #fff; border-radius: 18px; padding: 10px; display: flex; flex-direction: column; box-shadow: 0 18px 48px rgba(27, 31, 42, 0.2); }
-  .mnav__panel a { padding: 14px 16px; border-radius: 12px; text-decoration: none; font-weight: 600; color: var(--ink); }
-  .mnav__panel a:hover, .mnav__panel a[aria-current='page'] { background: var(--soft); }
-  .mnav__panel .mnav__cta { background: var(--red); color: #fff; text-align: center; margin-top: 6px; }
-  .mnav__panel .mnav__cta:hover { background: var(--red-dark); color: #fff; }
+  .mnav__panel { position: absolute; right: 0; top: 58px; z-index: 50; width: min(300px, calc(100vw - 32px)); background: #fff; border-radius: 20px; padding: 10px; display: flex; flex-direction: column; box-shadow: 0 18px 48px rgba(27, 31, 42, 0.22); }
+  .mnav__panel a { border-radius: 12px; padding: 14px 16px; font-weight: 600; font-size: 17px; }
+  .mnav__panel a:hover { background: var(--soft); }
+  .mnav__panel a[aria-current='page'] { background: var(--tone-tint); }
+  @media (prefers-reduced-motion: reduce) { .brand__bus { transition: none; } .brand:hover .brand__bus { transform: none; } }
   @media (max-width: 960px) {
-    .nav, .hdr__cta { display: none; }
+    .nav { display: none; }
     .mnav { display: block; }
-    .hdr__in { height: 68px; }
-    .brand__bus { width: 52px; }
+    .hdr__in { height: 66px; }
+    .brand__bus { width: 50px; }
+    .hdr__cta { min-height: 44px; padding: 0 16px; }
   }
-  @media (max-width: 360px) { .brand__sub { display: none; } .brand__name { font-size: 21px; } }
+  @media (max-width: 380px) { .brand__sub { display: none; } .brand__name { font-size: 20px; } .brand { gap: 8px; } .brand__bus { width: 44px; } }
 </style>

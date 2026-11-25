@@ -22,6 +22,8 @@
   --yellow: #f6c33b;     /* "ConVoglio" lettering */
   --yellow-dark: #e2ad1f;
   --sky: #3fa2e2;        /* ribbon */
+  --leaf: #6db33f;       /* green heart */
+  --pink: #f28db8;       /* pink heart */
   --teal: #0b6b62;       /* deep version of the mint windows, used for links */
   --teal-dark: #08514a;
   --night: #1b1f2a;
@@ -43,6 +45,10 @@
 *,
 *::before,
 *::after { box-sizing: border-box; }
+
+@view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .18s; }
+@media (prefers-reduced-motion: reduce) { ::view-transition-old(root), ::view-transition-new(root) { animation: none; } }
 
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: 96px; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
@@ -102,8 +108,8 @@ a:hover { color: var(--teal-dark); }
 /* Grids & cards */
 .grid { display: grid; gap: 16px; }
 .grid--2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); }
-.grid--3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
-.grid--4 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+.grid--3 { grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+.grid--4 { grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
 .card { background: #fff; border-radius: var(--radius); padding: 32px; }
 .card--soft { background: var(--soft); }
 .card h3 { font-size: 22px; font-weight: 600; margin-bottom: 10px; }
@@ -141,3 +147,10 @@ a:hover { color: var(--teal-dark); }
   .wrap { padding: 0 20px; }
   .lead { font-size: 17px; }
 }
+
+/* Section colour code: every area of the site keeps its own colour (nav dot, page band, cards). */
+.tone-yellow { --tone: var(--yellow); --tone-tint: var(--tint-yellow); --tone-ink: #6b4a00; }
+.tone-blue { --tone: var(--sky); --tone-tint: var(--tint-sky); --tone-ink: #0d4f7d; }
+.tone-red { --tone: var(--red); --tone-tint: var(--tint-red); --tone-ink: var(--red-dark); }
+.tone-green { --tone: var(--leaf); --tone-tint: var(--tint-mint); --tone-ink: #2f6b18; }
+.tone-soft { --tone: #9aa1ae; --tone-tint: var(--soft); --tone-ink: var(--muted); }

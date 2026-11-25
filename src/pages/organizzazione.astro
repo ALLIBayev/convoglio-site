@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
 import Icon from '../components/Icon.astro';
 import Partners from '../components/Partners.astro';
 import site from '../content/settings/site.json';
@@ -10,14 +11,7 @@ const icons = ['coins', 'users', 'sprout'] as const;
 const tones = ['red', 'yellow', 'green'];
 ---
 <Base title="Chi siamo · ConVoglio OdV" description={`${site.legalName}: chi siamo, cosa facciamo e con chi lavoriamo. ${site.motto}.`}>
-  <header class="wrap page-head head">
-    <div>
-      <p class="kicker">Chi siamo</p>
-      <h1 class="h1">{site.motto}.</h1>
-      <p class="lead">{home.about.lead} I fondi raccolti sostengono persone in difficoltà, la ricerca medica, l'ambiente e il contrasto alla violenza.</p>
-    </div>
-    <img class="head__bus" src={u('/brand/bus-480.webp')} alt="" width="480" height="394" />
-  </header>
+  <PageHead tone="yellow" kicker="Chi siamo" title={`${site.motto}.`} lead={`${home.about.lead} I fondi raccolti sostengono persone in difficoltà, la ricerca medica, l'ambiente e il contrasto alla violenza.`} crumbs={[{ label: 'Chi siamo' }]} />
 
   <section class="section section--soft">
     <div class="wrap">
@@ -51,23 +45,21 @@ const tones = ['red', 'yellow', 'green'];
         <div><dt>Documenti</dt><dd><a href={u('/documenti/')}>Statuto e informative</a></dd></div>
       </dl>
     </div>
-    <div class="wrap"><Partners /></div>
+    <div class="wrap net-wrap"><Partners /></div>
   </section>
 </Base>
 
 <style>
-  .head { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 48px; align-items: center; }
-  .head__bus { width: 100%; max-width: 380px; height: auto; justify-self: end; }
   .pillars { margin-top: 40px; }
   .facts { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
   .cta { margin-top: 24px; }
+  .net-wrap { margin-top: 72px; }
   .dl { margin: 0; border-top: 1px solid var(--line); }
   .dl div { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); }
   .dl dt { color: var(--muted); }
   .dl dd { margin: 0; font-weight: 600; }
   @media (max-width: 800px) {
-    .head, .facts { grid-template-columns: minmax(0, 1fr); }
-    .head__bus { justify-self: start; max-width: 220px; order: -1; }
+    .facts { grid-template-columns: minmax(0, 1fr); }
   }
   @media (max-width: 480px) { .dl div { grid-template-columns: 1fr; gap: 2px; } }
 </style>

@@ -1,12 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
 import site from '../content/settings/site.json';
 ---
 <Base title="Privacy · ConVoglio OdV" description="Informativa sul trattamento dei dati personali del sito di ConVoglio OdV.">
+  <PageHead tone="soft" kicker="Informativa privacy" title="Privacy" crumbs={[{ label: 'Privacy' }]} />
   <section class="section">
     <div class="wrap">
-      <p class="kicker">Informativa privacy</p>
-      <h1 class="h1">Privacy</h1>
       <div class="prose">
         <p><em>Ultimo aggiornamento: novembre 2026</em></p>
 
@@ -38,6 +38,5 @@ import site from '../content/settings/site.json';
 </Base>
 
 <style>
-  .h1 { font-size: clamp(40px, 5.4vw, 60px); font-weight: 800; margin-bottom: 32px; }
   .prose { font-size: 17px; }
 </style>

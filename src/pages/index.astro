@@ -4,10 +4,14 @@ import Base from '../layouts/Base.astro';
 import Media from '../components/Media.astro';
 import Icon from '../components/Icon.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import EventCard from '../components/EventCard.astro';
 import CopyField from '../components/CopyField.astro';
 import Partners from '../components/Partners.astro';
+import Sticker from '../components/Sticker.astro';
+import FeaturedProject from '../components/FeaturedProject.astro';
 import site from '../content/settings/site.json';
 import home from '../content/settings/home.json';
+import network from '../content/settings/network.json';
 import { u } from '../lib/url';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
@@ -17,135 +21,160 @@ const cards = rest.slice(0, 4);
 const chips = rest.slice(4);
 
 const events = (await getCollection('events')).sort((a, b) => a.data.order - b.data.order);
-const shownEvents = events.slice(0, 6);
+const withPhoto = events.find((e) => e.data.image);
+const tickets = events.filter((e) => e !== withPhoto).slice(0, 4);
+const ticketTones = ['yellow', 'blue', 'green', 'red'];
 
-const pillarIcons = ['coins', 'users', 'sprout'] as const;
-const pillarTones = ['red', 'yellow', 'green'];
-const featuredHref = featured.data.link ? u(featured.data.link) : u(`/progetti/${featured.id}/`);
-const hero = home.hero as typeof home.hero & { imageFit?: 'cover' | 'contain' };
+const hero = home.hero;
+const facts = [
+  { n: events.length, label: 'eventi solidali' },
+  { n: projects.length, label: 'progetti' },
+  { n: network.partners.length, label: 'associazioni partner' },
+];
+const how = home.how;
 ---
-<Base title={home.seoTitle}>
+<Base title={home.seoTitle} preloadImage="/brand/bus-480.webp">
+  <!-- HERO: the bus on the road is the one memorable picture of the site -->
   <section class="hero">
     <div class="wrap hero__grid">
       <div class="hero__copy">
-        <p class="badge">{hero.badge}</p>
+        <p class="badge"><span class="badge__dot" aria-hidden="true"></span>{hero.badge}</p>
         <h1>{hero.title}</h1>
         <p class="hero__lead">{hero.lead}</p>
         <div class="row">
-          <a class="btn btn--primary" href={u('/sostienici/')}>Sostienici</a>
-          <a class="btn btn--ghost" href="#progetti">Scopri i progetti</a>
+          <a class="btn btn--primary btn--lg" href={u('/sostienici/')}>Sostienici</a>
+          <a class="btn btn--ghost btn--lg" href="#come-funziona">Come funziona</a>
         </div>
-      </div>
-      <div class="hero__media">
-        <Media src={hero.image} alt={hero.imageAlt} fit={hero.imageFit ?? 'cover'} tone="blue" eager width={960} height={865} />
-        <a class="hero__chip" href={u('/sostienici/#cinque-per-mille')}>
-          <span class="hero__chip-ic"><Icon name="heart" size={20} /></span>
-          <span><strong>Dona il tuo 5×1000</strong><br /><small>Codice fiscale {site.fiscalCode}</small></span>
+        <a class="five" href={u('/sostienici/#cinque-per-mille')}>
+          <span class="five__ic"><Icon name="heart" size={18} /></span>
+          <span>Dona il tuo <strong>5×1000</strong>: codice fiscale <strong>{site.fiscalCode}</strong></span>
         </a>
       </div>
+
+      <div class="scene" aria-hidden="true">
+        <span class="scene__sun"></span>
+        <Sticker shape="heart" color="var(--leaf)" size={58} rotate={-14} class="s-a" />
+        <Sticker shape="heart" color="var(--sky)" size={46} rotate={12} class="s-b" />
+        <Sticker shape="heart" color="var(--pink)" size={34} rotate={-6} class="s-c" />
+        <Sticker shape="star" color="var(--yellow)" size={44} rotate={10} class="s-d" />
+        <Sticker shape="spark" color="var(--orange)" size={34} class="s-e" />
+        <img class="scene__bus" src={u('/brand/bus-480.webp')} alt="" width="480" height="394" fetchpriority="high" decoding="async" />
+        <span class="scene__road"></span>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <dl class="facts">
+        {facts.map((f) => (
+          <div class="fact"><dt>{f.label}</dt><dd>{f.n}</dd></div>
+        ))}
+        <div class="fact fact--text"><dt>Sede</dt><dd>Torino, Via Giolitti 21</dd></div>
+      </dl>
     </div>
   </section>
 
-  <section class="section section--soft" id="chi-siamo">
+  <!-- HOW IT WORKS: a real sequence, drawn as bus stops along one road -->
+  <section class="section how" id="come-funziona">
     <div class="wrap">
       <p class="kicker">Chi siamo</p>
-      <h2 class="h2">{home.about.title}</h2>
-      <p class="lead">{home.about.lead}</p>
-      <div class="grid grid--3 pillars">
-        {home.about.pillars.map((p, i) => (
-          <article class="card">
-            <span class={`pill-ic pill-ic--${pillarTones[i % 3]}`}><Icon name={pillarIcons[i % 3]} /></span>
-            <h3>{p.title}</h3>
-            <p>{p.text}</p>
-          </article>
+      <h2 class="h2">{how.title}</h2>
+      <p class="lead">{how.lead}</p>
+      <ol class="stops">
+        {how.steps.map((s, i) => (
+          <li class={`stop tone-${['yellow', 'blue', 'red'][i % 3]}`}>
+            <span class="stop__pin" aria-hidden="true">{i + 1}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
         ))}
-      </div>
-      <p class="after"><a class="more" href={u('/organizzazione/')}>Leggi chi siamo e come lavoriamo</a></p>
+      </ol>
+      <p class="after"><a class="btn btn--ghost" href={u('/organizzazione/')}>Chi siamo e la nostra missione</a></p>
     </div>
   </section>
 
-  <section class="section" id="progetti">
+  <!-- PROJECTS -->
+  <section class="section section--soft" id="progetti">
     <div class="wrap">
       <div class="section-head">
         <div>
-          <p class="kicker">Progetti</p>
-          <h2 class="h2">I nostri progetti</h2>
+          <p class="kicker kicker--blue">Progetti</p>
+          <h2 class="h2">Chi sale sul nostro autobus</h2>
         </div>
-        <a class="more" href={u('/progetti/')}>Tutti gli {projects.length} progetti</a>
+        <a class="btn btn--ghost" href={u('/progetti/')}>Tutti gli {projects.length} progetti</a>
       </div>
 
-      <a class="feat" href={featuredHref}>
-        <div class="feat__copy">
-          <span class="feat__badge">In evidenza</span>
-          <h3>{featured.data.title}</h3>
-          <p>{featured.data.summary}</p>
-          <span class="feat__more">Scopri il progetto</span>
-        </div>
-        <div class="feat__media"><Media src={featured.data.image} alt={featured.data.imageAlt} fit={featured.data.imageFit} tone="dark" /></div>
-      </a>
+      <FeaturedProject id={featured.id} data={featured.data} />
 
       <div class="grid grid--4 cards">
         {cards.map((p) => <ProjectCard id={p.id} data={p.data} />)}
       </div>
 
       {chips.length > 0 && (
-        <div class="chips" aria-label="Altri progetti">
-          {chips.map((p) => <a class="chip" href={p.data.link ? u(p.data.link) : u(`/progetti/${p.id}/`)}>{p.data.title}</a>)}
+        <div class="more-projects">
+          <p class="more-projects__label">E ancora</p>
+          <div class="chips">
+            {chips.map((p) => <a class="chip" href={p.data.link ? u(p.data.link) : u(`/progetti/${p.id}/`)}>{p.data.title}</a>)}
+          </div>
         </div>
       )}
     </div>
   </section>
 
-  <section class="section section--soft" id="eventi">
-    <div class="wrap ev">
-      <div>
-        <p class="kicker">Eventi</p>
-        <h2 class="h2">{home.events.title}</h2>
-        <p class="lead">{home.events.lead}</p>
-        <p class="after"><a class="btn btn--ghost" href={u('/eventi/')}>Tutti i {events.length} eventi</a></p>
+  <!-- EVENTS -->
+  <section class="section ev-sec" id="eventi">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="kicker">Eventi</p>
+          <h2 class="h2">{home.events.title}</h2>
+          <p class="lead">{home.events.lead}</p>
+        </div>
+        <a class="btn btn--ghost" href={u('/eventi/')}>Tutti i {events.length} eventi</a>
       </div>
-      <ul class="ev__list">
-        {shownEvents.map((e) => (
-          <li>
-            <a href={u(`/eventi/${e.id}/`)}>
-              <strong>{e.data.title}</strong>
-              {(e.data.category || e.data.date) && <span>{e.data.date || e.data.category}</span>}
-            </a>
-          </li>
-        ))}
-      </ul>
+      <div class="ev">
+        {withPhoto && <div class="ev__photo"><EventCard id={withPhoto.id} data={withPhoto.data} headingLevel="h3" /></div>}
+        <div class="ev__tickets">
+          {tickets.map((e, i) => <EventCard id={e.id} data={e.data} tone={ticketTones[i % 4]} headingLevel="h3" />)}
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="section" id="sostienici">
+  <!-- SUPPORT -->
+  <section class="support-sec" id="sostienici">
+    <Sticker shape="heart" color="#fff" size={90} rotate={-12} class="sup-s1" />
+    <Sticker shape="star" color="var(--yellow)" size={54} rotate={16} class="sup-s2" />
     <div class="wrap">
-      <p class="kicker">Sostienici</p>
-      <h2 class="h2 support__title">{home.support.title}</h2>
-      <div class="grid grid--3">
-        <article class="card support support--red">
+      <p class="kicker kicker--light">Sostienici</p>
+      <h2 class="h2">{home.support.title}</h2>
+      <div class="grid grid--3 ways">
+        <article class="way">
           <h3>{home.support.fiveTitle}</h3>
           <p>{home.support.fiveText}</p>
-          <div class="support__foot"><CopyField value={site.fiscalCode} label="codice fiscale" variant="onred" /></div>
+          <div class="way__foot"><CopyField value={site.fiscalCode} label="codice fiscale" /></div>
         </article>
-        <article class="card card--soft support">
+        <article class="way">
           <h3>{home.support.donateTitle}</h3>
           <p>{home.support.donateText}</p>
-          <div class="support__foot row">
+          <div class="way__foot row">
             <a class="btn btn--primary" href={u('/sostienici/#dona')}>Dona ora</a>
             {site.donations.satispay && <a class="btn btn--ghost" href={site.donations.satispay} target="_blank" rel="noopener">Satispay</a>}
           </div>
         </article>
-        <article class="card card--soft support">
+        <article class="way">
           <h3>{home.support.volunteerTitle}</h3>
           <p>{home.support.volunteerText}</p>
-          <div class="support__foot row">
+          <div class="way__foot row">
             <a class="btn btn--ghost" href={u('/iscrizioni/')}>Diventa socio</a>
           </div>
         </article>
       </div>
+    </div>
+  </section>
 
+  <section class="section">
+    <div class="wrap">
       <Partners />
-
       <div class="news">
         <div>
           <h2>{home.newsletter.title}</h2>
@@ -162,67 +191,103 @@ const hero = home.hero as typeof home.hero & { imageFit?: 'cover' | 'contain' };
 </Base>
 
 <style>
-  .badge { align-self: flex-start; background: var(--tint-yellow); color: #6b4a00; font-weight: 600; font-size: 15px; padding: 8px 14px; border-radius: 999px; }
+  /* HERO */
+  .hero { position: relative; background: linear-gradient(180deg, var(--tint-sky) 0%, #f4faff 78%, #fff 100%); padding: 56px 0 40px; overflow: hidden; }
+  .hero__grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 48px; align-items: center; }
+  .hero__copy { display: flex; flex-direction: column; gap: 24px; position: relative; z-index: 1; }
+  .badge { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--ink); font-weight: 600; font-size: 15px; padding: 8px 14px 8px 10px; border-radius: 999px; box-shadow: 0 4px 14px rgba(27, 31, 42, 0.06); }
+  .badge__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--leaf); box-shadow: 0 0 0 4px rgba(109, 179, 63, 0.2); }
+  .hero h1 { font-size: clamp(46px, 6.4vw, 84px); font-weight: 800; line-height: 0.98; letter-spacing: -0.03em; }
+  .hero__lead { font-size: 20px; color: #3d4350; max-width: 540px; }
+  .btn--lg { min-height: 54px; padding: 0 26px; font-size: 17px; }
+  .five { align-self: flex-start; display: inline-flex; align-items: center; gap: 12px; color: var(--ink); text-decoration: none; font-size: 15px; padding: 6px 16px 6px 6px; border-radius: 999px; background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(27, 31, 42, 0.08); }
+  .five:hover { color: var(--ink); background: #fff; }
+  .five__ic { width: 36px; height: 36px; border-radius: 50%; background: var(--red); color: #fff; display: grid; place-items: center; flex-shrink: 0; }
 
-  .hero { padding: 72px 0 96px; }
-  .hero__grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 56px; align-items: center; }
-  .hero__copy { display: flex; flex-direction: column; gap: 26px; }
-  .hero h1 { font-size: clamp(44px, 6vw, 76px); font-weight: 800; line-height: 1; letter-spacing: -0.025em; }
-  .hero__lead { font-size: 20px; color: var(--muted); max-width: 540px; }
-  .hero__media { position: relative; aspect-ratio: 1 / 0.92; border-radius: var(--radius-lg); overflow: hidden; background: var(--tint-sky); }
-  .hero__media :global(.media--contain) { padding: 28px 28px 92px; }
-  .hero__chip { position: absolute; left: 20px; bottom: 20px; display: flex; gap: 14px; align-items: center; background: #fff; color: var(--ink); text-decoration: none; padding: 12px 20px 12px 12px; border-radius: 18px; box-shadow: 0 12px 32px rgba(27, 31, 42, 0.14); line-height: 1.3; }
-  .hero__chip:hover { color: var(--ink); box-shadow: 0 14px 36px rgba(27, 31, 42, 0.22); }
-  .hero__chip small { color: var(--muted); font-size: 13px; }
-  .hero__chip-ic { width: 44px; height: 44px; border-radius: 12px; background: var(--red); color: #fff; display: grid; place-items: center; flex-shrink: 0; }
+  .scene { position: relative; aspect-ratio: 1 / 0.86; }
+  .scene__sun { position: absolute; right: 6%; top: 2%; width: 30%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 40% 40%, #ffe28a, var(--yellow)); box-shadow: 0 0 0 18px rgba(246, 195, 59, 0.18), 0 0 0 40px rgba(246, 195, 59, 0.08); }
+  .scene__road { position: absolute; left: -10%; right: -40%; bottom: 8%; height: 13%; border-radius: 999px; background: var(--night); }
+  .scene__road::after { content: ''; position: absolute; left: 4%; right: 4%; top: 50%; height: 4px; transform: translateY(-50%); background: repeating-linear-gradient(90deg, #fff 0 26px, transparent 26px 50px); opacity: .85; }
+  .scene__bus { position: absolute; left: 8%; bottom: 14%; width: 76%; height: auto; z-index: 2; filter: drop-shadow(0 18px 18px rgba(27, 31, 42, 0.18)); animation: drive-in .9s cubic-bezier(.2, .8, .2, 1) both; }
+  .scene :global(.sticker) { z-index: 3; }
+  .scene :global(.s-a) { left: 0; top: 14%; }
+  .scene :global(.s-b) { right: 2%; top: 42%; }
+  .scene :global(.s-c) { left: 30%; top: 4%; }
+  .scene :global(.s-d) { left: 14%; top: 40%; z-index: 1; }
+  .scene :global(.s-e) { right: 34%; top: 10%; }
+  @keyframes drive-in { from { transform: translateX(-28%); opacity: 0; } 60% { opacity: 1; } to { transform: none; opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .scene__bus { animation: none; } }
 
-  .pillars { margin-top: 48px; }
-  .after { margin-top: 32px; }
+  .facts { margin: 40px 0 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .fact { background: #fff; border-radius: 18px; padding: 18px 20px; display: flex; flex-direction: column-reverse; gap: 2px; box-shadow: 0 4px 16px rgba(27, 31, 42, 0.05); }
+  .fact dt { color: var(--muted); font-size: 15px; }
+  .fact dd { margin: 0; font-family: var(--font-head); font-weight: 800; font-size: 36px; line-height: 1; }
+  .fact--text dd { font-size: 19px; line-height: 1.25; }
 
-  .feat { display: grid; grid-template-columns: 1fr 1fr; border-radius: var(--radius-lg); overflow: hidden; background: var(--night); color: #fff; text-decoration: none; }
-  .feat:hover { color: #fff; }
-  .feat__copy { padding: 56px 48px; display: flex; flex-direction: column; gap: 18px; justify-content: center; }
-  .feat__badge { align-self: flex-start; background: var(--yellow); color: var(--ink); font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 999px; }
-  .feat h3 { font-size: clamp(32px, 3.6vw, 44px); font-weight: 800; }
-  .feat p { color: #d5d9e0; font-size: 18px; max-width: 460px; }
-  .feat__more { color: var(--yellow); font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
-  .feat__media { min-height: 340px; }
-  .cards { margin: 20px 0 24px; }
+  /* HOW */
+  .how .stops { list-style: none; margin: 48px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; position: relative; }
+  .how .stops::before { content: ''; position: absolute; left: 28px; right: 28px; top: 26px; height: 6px; border-radius: 6px; background: repeating-linear-gradient(90deg, var(--night) 0 22px, transparent 22px 36px); opacity: .18; }
+  .stop { position: relative; display: flex; flex-direction: column; gap: 8px; }
+  .stop__pin { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: var(--tone); color: var(--ink); font-family: var(--font-head); font-weight: 800; font-size: 24px; border: 5px solid #fff; box-shadow: 0 6px 16px rgba(27, 31, 42, 0.14); margin-bottom: 12px; position: relative; z-index: 1; }
+  .stop.tone-red .stop__pin { color: #fff; }
+  .stop h3 { font-size: 24px; font-weight: 800; }
+  .stop p { color: var(--muted); max-width: 340px; }
+  .after { margin-top: 40px; }
 
-  .ev { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
-  .ev__list { list-style: none; margin: 0; padding: 0; background: #fff; border-radius: var(--radius); overflow: hidden; }
-  .ev__list li + li { border-top: 1px solid var(--line); }
-  .ev__list a { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 24px; color: var(--ink); text-decoration: none; min-height: 60px; }
-  .ev__list a:hover { background: var(--soft); }
-  .ev__list strong { font-weight: 600; font-size: 17px; }
-  .ev__list span { color: var(--muted); font-size: 14px; white-space: nowrap; }
+  /* PROJECTS */
+  .kicker--blue { color: #0d4f7d; }
+  .cards { margin: 20px 0 28px; }
+  .more-projects { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
+  .more-projects__label { font-weight: 600; color: var(--muted); }
 
-  .support__title { margin-bottom: 40px; }
-  .support { display: flex; flex-direction: column; gap: 4px; }
-  .support--red { background: var(--red); color: #fff; }
-  .support--red p { color: #fff; }
-  .support__foot { margin-top: auto; padding-top: 24px; }
+  /* EVENTS */
+  .ev { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr); gap: 20px; align-items: stretch; }
+  .ev__tickets { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-content: start; }
+  .ev-sec { --ticket-bg: #fff; }
+
+  /* SUPPORT */
+  .support-sec { position: relative; overflow: hidden; background: var(--red); color: #fff; padding: 96px 0; }
+  .support-sec .h2 { color: #fff; }
+  .kicker--light { color: #fff; }
+  .support-sec :global(.sup-s1) { right: 6%; top: 40px; opacity: .9; }
+  .support-sec :global(.sup-s2) { right: 16%; top: 110px; }
+  .ways { margin-top: 40px; }
+  .way { background: #fff; color: var(--ink); border-radius: var(--radius); padding: 30px; display: flex; flex-direction: column; gap: 6px; }
+  .way h3 { font-size: 24px; font-weight: 800; }
+  .way p { color: var(--muted); }
+  .way__foot { margin-top: auto; padding-top: 22px; }
 
   .news { margin-top: 64px; background: var(--teal); color: #fff; border-radius: var(--radius-lg); padding: 48px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: center; }
   .news h2 { font-size: 34px; font-weight: 800; margin-bottom: 8px; }
   .news p { color: #d8eee9; max-width: 520px; }
 
-  @media (max-width: 900px) {
-    .hero__grid, .ev, .news { grid-template-columns: minmax(0, 1fr); }
-    .hero__media { max-width: 560px; }
-    .feat { grid-template-columns: 1fr; }
-    .feat__media { min-height: 0; aspect-ratio: 4 / 3; order: -1; }
+  @media (max-width: 960px) {
+    .hero__grid { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    .scene { max-width: 520px; width: 100%; margin: 0 auto; order: -1; aspect-ratio: 1 / 0.7; }
+    .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ev, .news { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 760px) {
+    .how .stops { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+    .how .stops::before { left: 25px; right: auto; top: 28px; bottom: 28px; width: 6px; height: auto; background: repeating-linear-gradient(180deg, var(--night) 0 18px, transparent 18px 30px); }
+    .stop { padding-left: 76px; }
+    .stop__pin { position: absolute; left: 0; top: -4px; margin: 0; }
+    .ev__tickets { grid-template-columns: minmax(0, 1fr); }
   }
   @media (max-width: 600px) {
-    .hero { padding: 32px 0 56px; }
-    .hero__copy { gap: 20px; }
+    .hero { padding: 20px 0 32px; }
+    .hero__copy { gap: 18px; }
     .hero__lead { font-size: 17px; }
-    .hero__media :global(.media--contain) { padding: 20px 20px 84px; }
-    .hero__chip { left: 12px; right: 12px; bottom: 12px; }
-    .feat__copy { padding: 28px 22px 32px; }
-    .feat p { font-size: 16px; }
+    .five { font-size: 14px; }
+    .facts { margin-top: 28px; gap: 10px; }
+    .fact { padding: 14px 16px; }
+    .fact dd { font-size: 30px; }
+    .fact--text dd { font-size: 16px; }
+    .support-sec { padding: 64px 0; }
+    .support-sec :global(.sup-s1) { width: 54px; height: 54px; top: 24px; right: 16px; }
+    .support-sec :global(.sup-s2) { display: none; }
+    .way { padding: 24px; }
     .news { padding: 32px 22px; }
     .news h2 { font-size: 28px; }
-    .ev__list a { flex-direction: column; align-items: flex-start; gap: 2px; padding: 16px 20px; }
   }
 </style>

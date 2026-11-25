@@ -2,23 +2,25 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
+import PageHead from '../../components/PageHead.astro';
+import FeaturedProject from '../../components/FeaturedProject.astro';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const featured = projects.filter((p) => p.data.featured && p.data.image);
+const rest = projects.filter((p) => !featured.includes(p));
 ---
 <Base title="Progetti · ConVoglio OdV" description="Tutti i progetti di ConVoglio OdV, organizzazione di volontariato a Torino.">
-  <header class="wrap page-head">
-    <p class="kicker">Progetti</p>
-    <h1 class="h1">I nostri progetti</h1>
-    <p class="lead">Sport, feste, iniziative solidali: ecco tutti i progetti che portiamo avanti con i nostri volontari.</p>
-  </header>
+  <PageHead tone="blue" kicker="Progetti" title="Chi sale sul nostro autobus" lead="Sport, feste, iniziative solidali: ecco tutti i progetti che portiamo avanti con i nostri volontari." crumbs={[{ label: 'Progetti' }]} />
   <section class="wrap list-wrap">
+    {featured.map((p) => <div class="featured"><FeaturedProject id={p.id} data={p.data} headingLevel="h2" /></div>)}
     <div class="grid grid--3 list">
-      {projects.map((p) => <ProjectCard id={p.id} data={p.data} headingLevel="h2" />)}
+      {rest.map((p) => <ProjectCard id={p.id} data={p.data} headingLevel="h2" />)}
     </div>
   </section>
 </Base>
 
 <style>
-  .list-wrap { padding-bottom: 96px; }
+  .list-wrap { padding-top: 48px; padding-bottom: 96px; }
+  .featured { margin-bottom: 20px; }
   @media (max-width: 600px) { .list-wrap { padding-bottom: 64px; } }
 </style>

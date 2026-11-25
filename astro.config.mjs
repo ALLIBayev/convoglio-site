@@ -13,6 +13,8 @@ export default defineConfig({
   site: SITE_URL,
   base: BASE_PATH,
   trailingSlash: 'always',
+  // Pages load on hover/tap before the click lands.
+  prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
   integrations: [sitemap({ filter: (page) => !/^\/(home|cirillico|progetti\/asd-san-paolo-torino)(\/|$)/.test(new URL(page).pathname) })],
   // Old Google Sites addresses keep working after the switch.
   redirects: {
