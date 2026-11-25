@@ -1,0 +1,24 @@
+---
+// Error monitoring with Sentry (EU region). Active only when PUBLIC_SENTRY_DSN is set at build time
+// (the GitHub deploy sets it; local builds and previews stay silent). No cookies, no IP, no tracing.
+const dsn = import.meta.env.PUBLIC_SENTRY_DSN;
+---
+{dsn && (
+  <script is:inline define:vars={{ dsn }}>window.__SENTRY_DSN__ = dsn;</script>
+)}
+{dsn && (
+  <script>
+    const start = () =>
+      import('@sentry/browser').then((Sentry) => {
+        Sentry.init({
+          dsn: (window as any).__SENTRY_DSN__,
+          environment: location.hostname.endsWith('github.io') ? 'preview' : 'production',
+          sendDefaultPii: false,
+          tracesSampleRate: 0,
+          integrations: [],
+        });
+      });
+    if ('requestIdleCallback' in window) (window as any).requestIdleCallback(start, { timeout: 3000 });
+    else setTimeout(start, 1500);
+  </script>
+)}

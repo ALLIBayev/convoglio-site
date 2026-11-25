@@ -8,6 +8,7 @@ const SITE_URL = process.env.SITE_URL || 'https://www.associazioneconvoglio.it';
 // Only used for previews in a sub-folder (e.g. user.github.io/repo/).
 // With the custom domain this stays '/'.
 const BASE_PATH = process.env.BASE_PATH || '/';
+const at = (path) => `${BASE_PATH.replace(/\/$/, '')}${path}`;
 
 export default defineConfig({
   site: SITE_URL,
@@ -18,8 +19,8 @@ export default defineConfig({
   integrations: [sitemap({ filter: (page) => !/^\/(home|cirillico|progetti\/asd-san-paolo-torino)(\/|$)/.test(new URL(page).pathname) })],
   // Old Google Sites addresses keep working after the switch.
   redirects: {
-    '/home': '/',
-    '/cirillico': '/progetti/uspr-cirillico/',
+    '/home': at('/'),
+    '/cirillico': at('/progetti/uspr-cirillico/'),
     '/progetti/asd-san-paolo-torino': 'https://www.sanpaolotorino.it/',
     '/progetti/asd-san-paolo-torino/she7-spt-cup': 'https://www.sanpaolotorino.it/',
   },

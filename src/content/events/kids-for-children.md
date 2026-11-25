@@ -13,4 +13,4 @@ Con il patrocinio della Circoscrizione 1 Centro Crocetta, i **Piccoli Cantori di
 
 Le donazioni raccolte sono state devolute al **Centro Puzzle** per finanziare il progetto **Mini Puzzle**, dedicato alla riabilitazione di bambini e ragazzi con cerebrolesione acquisita.
 
-*La locandina è del 2017: i contatti e le coordinate bancarie riportati sopra non sono più validi. Per sostenerci oggi usa i dati della pagina [Sostienici](/sostienici/).*
+*La locandina è del 2017: i contatti e le coordinate bancarie riportati sopra non sono più validi. Per sostenerci oggi usa i dati della pagina [Sostienici](../../sostienici/).*

@@ -42,7 +42,8 @@ npm run build    # output in dist/
 
 1. Repository nell'organizzazione GitHub di ConVoglio → **Settings → Pages → Source: GitHub Actions**.
 2. Ogni push su `main` pubblica il sito (`.github/workflows/deploy.yml`).
-3. Variabili del repository (**Settings → Secrets and variables → Actions → Variables**):
+3. Senza variabili il sito si pubblica come anteprima su `https://<account>.github.io/<repo>/` (non indicizzata da Google).
+4. Variabili del repository per il lancio (**Settings → Secrets and variables → Actions → Variables**):
    - `SITE_URL` = `https://www.associazioneconvoglio.it` (per canonical, sitemap, anteprime link)
    - `BASE_PATH` = vuoto con il dominio proprio; `/<nome-repo>/` solo per un'anteprima su `*.github.io/<nome-repo>/`.
 
@@ -58,6 +59,10 @@ npm run build    # output in dist/
 4. Google Search Console: verificare il dominio e inviare `sitemap-index.xml`.
 
 Per tornare a Google Sites basta rimettere i vecchi record su Aruba e ricollegare il dominio dal Google Site.
+
+## Monitoraggio errori
+
+Sentry (progetto `saldr/convoglio-site`, dati in UE) riceve gli errori JavaScript dei visitatori. È attivo solo nei build con `PUBLIC_SENTRY_DSN` (il workflow lo imposta). Niente IP, niente cookie, niente tracing.
 
 ## Editor (Pages CMS)
 

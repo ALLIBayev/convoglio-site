@@ -11,6 +11,7 @@
     "@fontsource/bricolage-grotesque": "^5.3.0",
     "@fontsource/inter": "^5.3.0",
     "@fontsource/unbounded": "^5.3.0",
+    "@sentry/browser": "^11.17.0",
     "astro": "^7.4.13"
   },
   "type": "module",
